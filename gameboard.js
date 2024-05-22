@@ -15,15 +15,17 @@ class GameBoard {
 
     }
 
-    placeShip(){
+    createShip(){
 
         let ships = []
     
-           for(boat of this.ships){
+           for(let boat of this.ships){
     
             ships.push(new Ship(boat))
             
-           } 
+           }
+
+        return ships    
     }
     
 
@@ -46,7 +48,7 @@ placeShip(){
 
     let ships = []
 
-       for(boat of this.ships){
+       for(let boat of this.ships){
 
         ships.push(new Ship(boat))
         
