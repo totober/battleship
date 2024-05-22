@@ -27,6 +27,25 @@ class GameBoard {
 
         return ships    
     }
+
+    placeShip() {
+
+        let ships = this.createShip()
+
+        while(ships.length > 0) {
+
+            let randomRow = Math.floor(Math.random() * 10)
+            let randomCol = Math.floor(Math.random() * 10)
+            let vertical = Math.floor(Math.random() * 2)
+    
+            let loopRow = randomRow
+            let loopCol = randomCol
+    
+            let ship = ships.shift()
+        }
+        
+        return ships
+    }
     
 
     receiveAttack(y, x){

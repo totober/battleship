@@ -24,6 +24,7 @@ it("has a method", () => {
 
     expect(game).toHaveProperty("receiveAttack")
     expect(game).toHaveProperty("createShip")
+    expect(game).toHaveProperty("placeShip")
 })
 
 it("createShip value", () => {
@@ -40,6 +41,11 @@ it("createShip value", () => {
     expect(game.createShip()).toContainEqual(ship4)
     expect(game.createShip()).toContainEqual(ship5)
 })
+
+it("placeShip value", () => {
+
+    expect(game.placeShip()).toBeUndefined
+} )
 
 
 
