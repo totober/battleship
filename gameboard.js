@@ -34,7 +34,7 @@ class GameBoard {
 
         let index = 0
 
-        while(/* ships.length > 0 */ index < 1) {
+        while(/* ships.length > 0 */ index < 2) {
 
             index ++
 
@@ -49,7 +49,22 @@ class GameBoard {
 
             if(vertical) {
 
+                let coord = []
+
                 for(let i = 0; i < ship.length; i++){
+
+                    if(typeof this.adjacencyList[loopRow] !== "undefined") {
+
+                        while(coord.length > 0) {
+                            delete this.adjacencyList[coord.pop()]
+                        }
+
+                        ships.unshift(ship)
+
+                        this.adjacencyList[loopRow] = "OVERLAP"
+
+                        break
+                    }
 
                     this.adjacencyList[loopRow].push([loopCol, ship])
                 

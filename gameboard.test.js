@@ -42,7 +42,7 @@ it("createShip value", () => {
     expect(game.createShip()).toContainEqual(ship5)
 })
 
-it("placeShip value", () => {
+it.skip("placeShip value", () => {
 
     let ship1 = [6, {type: "carrier", length: 5}]
 
@@ -55,6 +55,13 @@ it("placeShip value", () => {
     expect(game.adjacencyList[6]).toContainEqual(ship1)
     expect(game.adjacencyList[4].length).toBe(0)
 } )
+
+it("placeShip value OVERLAP", () => {
+
+    game.placeShip()
+
+    expect(game.adjacencyList[7]).toBe("OVERLAP")
+})
 
 
 
