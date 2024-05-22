@@ -44,7 +44,16 @@ it("createShip value", () => {
 
 it("placeShip value", () => {
 
-    expect(game.placeShip()).toBeUndefined
+    let ship1 = [6, {type: "carrier", length: 5}]
+
+    game.placeShip()
+
+    expect(game.adjacencyList[7]).toContainEqual(ship1)
+    expect(game.adjacencyList[8]).toContainEqual(ship1)
+    expect(game.adjacencyList[9]).toContainEqual(ship1)
+    expect(game.adjacencyList[5]).toContainEqual(ship1)
+    expect(game.adjacencyList[6]).toContainEqual(ship1)
+    expect(game.adjacencyList[4].length).toBe(0)
 } )
 
 

@@ -32,19 +32,39 @@ class GameBoard {
 
         let ships = this.createShip()
 
-        while(ships.length > 0) {
+        let index = 0
 
-            let randomRow = Math.floor(Math.random() * 10)
-            let randomCol = Math.floor(Math.random() * 10)
-            let vertical = Math.floor(Math.random() * 2)
+        while(/* ships.length > 0 */ index < 1) {
+
+            index ++
+
+            let randomRow = /* Math.floor(Math.random() * 10) */  7 // MOCKING NUMBER
+            let randomCol = /* Math.floor(Math.random() * 10) */ 6 // MOCKING NUMBER
+            let vertical = /* Math.floor(Math.random() * 2) */ 1
     
             let loopRow = randomRow
-            let loopCol = randomCol
+            let loopCol = randomCol 
     
             let ship = ships.shift()
+
+            if(vertical) {
+
+                for(let i = 0; i < ship.length; i++){
+
+                    this.adjacencyList[loopRow].push([loopCol, ship])
+                
+                    if(loopRow < 9) {
+                
+                        loopRow ++
+                        continue
+                    }
+
+                    loopRow = randomRow - i
+                }
+            }
         }
         
-        return ships
+        return this.adjacencyList
     }
     
 
@@ -110,7 +130,7 @@ placeShip(){
                 }
 
                 // Si la posicion NO esta tomada, la guardo en la adjacencyList
-                this.adjacencyList[loopRow]
+                this.adjacencyList[loopRow].push([loopCol, ship])
 
                 // y guardo esa coordenada en el array de coordenadas
                 coord.push(loopRow)
