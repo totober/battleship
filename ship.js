@@ -5,8 +5,10 @@ class Ship {
     #hitCounter = 0
     #isSunk = false
 
-    constructor(length){
+    constructor({type, length}){
         this.length = length
+        this.type = type
+        
     }
 
     hit() {
