@@ -15,7 +15,7 @@ class GameBoard {
 
     createShip(){
 
-        let shipTypes = [{type: "carrier", length: 3}, {type: "battleship", length: 4}, 
+        let shipTypes = [{type: "carrier", length: 5}, {type: "battleship", length: 4}, 
                         {type: "destroyer", length: 3}, {type: "submarine", length: 3}, 
                         {type: "patrol boat", length: 2}]
                     
@@ -29,22 +29,22 @@ class GameBoard {
         return ships    
     }
 
-    placeShip(randomRow, randomCol) {
+    placeShip(/* randomCol, randomRow */) {
 
         let ships = this.createShip()
 
         let index = 0
 
         // solo para testear
-        let coord = []
+        //let coord = []
 
-        while(/* ships.length > 0 */ index < 1) {
+        while( ships.length > 0 /* index < 1 */) {
 
-            index ++
+            //index ++
 
-           // let randomRow = /* Math.floor(Math.random() * 10) */  /* 7 */ // MOCKING NUMBER
-           // let randomCol = /* Math.floor(Math.random() * 10) */ 6 // MOCKING NUMBER
-            let vertical = /* Math.floor(Math.random() * 2) */ 1
+            let randomRow =  Math.floor(Math.random() * 10)   // 7  MOCKING NUMBER
+            let randomCol =  Math.floor(Math.random() * 10)  //6  MOCKING NUMBER
+            let vertical =  Math.floor(Math.random() * 2)
     
             let loopRow = randomRow
             let loopCol = randomCol 
@@ -53,10 +53,10 @@ class GameBoard {
 
             this.ships.push(ship)
 
-            if(vertical) {
+          /*   if(vertical) { */
 
                 // este es el que va
-                //let coord = []
+                let coord = []
 
                 for(let i = 0; i < ship.length; i++){
 
@@ -82,6 +82,7 @@ class GameBoard {
 
                         ships.unshift(ship)
                         this.ships.pop()
+                        ship.coordinate = []
 
                         // esto es solo para la test
                         //this.adjacencyList[loopRow] = ["OVERLAP"]
@@ -92,18 +93,34 @@ class GameBoard {
                     coord.push([loopRow, loopCol])
                     this.adjacencyList[loopRow].push(loopCol)
                     ship.coordinate.push([loopRow, loopCol])
-                
-                    if(loopRow < (this.rowQuantity - 1)) {
-                
-                        loopRow ++
-                        continue
-                    }
 
-                    loopRow = randomRow - i
+                    if(vertical) {
+
+                        if(loopRow < (this.rowQuantity - 1)) {
+                
+                            loopRow ++
+                            continue
+                        }
+    
+                        loopRow = randomRow - i
+
+                    } else {
+
+                        if(loopCol < (this.columnQuantity - 1)) {
+                
+                            loopCol ++
+                            continue
+                        }
+    
+                        loopCol = randomCol - i
+
+                    }
+                
+                    
                 }
 
                 coord = []
-            }
+            /* } */
     
         }
         
