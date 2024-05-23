@@ -4,42 +4,46 @@ export {GameBoard}
 
 class GameBoard {
 
-    constructor(){
-        this.rowQuantity = 10
-        this.columnQuantity = 10
-        this.columnLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
+    constructor(rowQuantity = 10, columnQuantity = 10 ){
+        this.rowQuantity = rowQuantity
+        this.columnQuantity = columnQuantity
         this.adjacencyList = [[], [], [], [], [],
                               [], [], [], [], []]
-        this.ships = [{type: "carrier", length: 5}, {type: "battleship", length: 4}, {type: "destroyer", length: 3},
-                    {type: "submarine", length: 3}, {type: "patrol boat", length: 2}]
+        this.ships = []
 
     }
 
     createShip(){
 
+        let shipTypes = [{type: "carrier", length: 3}, {type: "battleship", length: 4}, 
+                        {type: "destroyer", length: 3}, {type: "submarine", length: 3}, 
+                        {type: "patrol boat", length: 2}]
+                    
         let ships = []
-    
-           for(let boat of this.ships){
-    
-            ships.push(new Ship(boat))
-            
-           }
+
+        for(let ship of shipTypes){
+  
+            ships.push(new Ship(ship))            
+        }
 
         return ships    
     }
 
-    placeShip() {
+    placeShip(randomRow, randomCol) {
 
         let ships = this.createShip()
 
         let index = 0
 
-        while(/* ships.length > 0 */ index < 2) {
+        // solo para testear
+        let coord = []
+
+        while(/* ships.length > 0 */ index < 1) {
 
             index ++
 
-            let randomRow = /* Math.floor(Math.random() * 10) */  7 // MOCKING NUMBER
-            let randomCol = /* Math.floor(Math.random() * 10) */ 6 // MOCKING NUMBER
+           // let randomRow = /* Math.floor(Math.random() * 10) */  /* 7 */ // MOCKING NUMBER
+           // let randomCol = /* Math.floor(Math.random() * 10) */ 6 // MOCKING NUMBER
             let vertical = /* Math.floor(Math.random() * 2) */ 1
     
             let loopRow = randomRow
@@ -47,28 +51,49 @@ class GameBoard {
     
             let ship = ships.shift()
 
+            this.ships.push(ship)
+
             if(vertical) {
 
-                let coord = []
+                // este es el que va
+                //let coord = []
 
                 for(let i = 0; i < ship.length; i++){
 
-                    if(typeof this.adjacencyList[loopRow] !== "undefined") {
+                    if(/* this.adjacencyList[loopRow].length > 0 */ this.adjacencyList[loopRow].includes(loopCol)){
+
+                        console.log("a ver topus")
 
                         while(coord.length > 0) {
-                            delete this.adjacencyList[coord.pop()]
+
+                            let  [row, col] = coord.pop()
+
+                           /*  let index
+
+                           for(let arr of this.adjacencyList[row]){
+                               index = arr.indexOf(col, ship)
+                           }
+
+                          this.adjacencyList[row].splice(index, 1) */
+
+                          let index = this.adjacencyList[row].indexOf(col)
+                          this.adjacencyList[row].splice(index, 1)
                         }
 
                         ships.unshift(ship)
+                        this.ships.pop()
 
-                        this.adjacencyList[loopRow] = "OVERLAP"
+                        // esto es solo para la test
+                        //this.adjacencyList[loopRow] = ["OVERLAP"]
 
                         break
                     }
 
-                    this.adjacencyList[loopRow].push([loopCol, ship])
+                    coord.push([loopRow, loopCol])
+                    this.adjacencyList[loopRow].push(loopCol)
+                    ship.coordinate.push([loopRow, loopCol])
                 
-                    if(loopRow < 9) {
+                    if(loopRow < (this.rowQuantity - 1)) {
                 
                         loopRow ++
                         continue
@@ -76,10 +101,14 @@ class GameBoard {
 
                     loopRow = randomRow - i
                 }
+
+                coord = []
             }
+    
         }
         
         return this.adjacencyList
+       //return coord 
     }
     
 
