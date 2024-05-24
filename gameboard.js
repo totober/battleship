@@ -5,14 +5,16 @@ export {GameBoard}
 class GameBoard {
 
     constructor(rowQuantity = 10, columnQuantity = 10 ){
-        this.rowQuantity = rowQuantity
-        this.columnQuantity = columnQuantity
-        this.adjacencyList = [[], [], [], [], [],
-                              [], [], [], [], []]
-        this.ships = []
+
+        this.rowQuantity = rowQuantity,
+        this.columnQuantity = columnQuantity,
+        this.ships = [],
+        this.shipsSunk = [],
+        this.waterHitList = [[], [], [], [], [], [], [], [], [], []],
+        this.shipHitList = [[], [], [], [], [], [], [], [], [], []]      
     }
 
-    createShips(){
+    #createShips(){
 
         let shipTypes = [{type: "carrier", length: 5}, {type: "battleship", length: 4}, 
                         {type: "destroyer", length: 3}, {type: "submarine", length: 3}, 
@@ -30,7 +32,8 @@ class GameBoard {
 
     placeShips() {
 
-        let shipsQueue = this.createShips()
+        let shipsQueue = this.#createShips()
+        let adjacencyList = [[], [], [], [], [], [], [], [], [], []]
 
         while(shipsQueue.length > 0) {
 
@@ -48,7 +51,7 @@ class GameBoard {
 
                 for(let i = 0; i < ship.length; i++){
 
-                    if(this.adjacencyList[randomRowCopy].includes(randomColCopy)){
+                    if(adjacencyList[randomRowCopy].includes(randomColCopy)){
 
                         ship.coordinates = []
                         shipsQueue.unshift(ship)
@@ -81,18 +84,18 @@ class GameBoard {
                     }
                 }
 
-                if(ship.coordinates.length > 0) this.encloseShip(ship)
+                if(ship.coordinates.length > 0) this.#encloseShip(ship, adjacencyList)
         }
         
-        return this.adjacencyList
+        return adjacencyList
     }
     
-    encloseShip(ship){
+    #encloseShip(ship, adjacencyList){
 
-        for(let coordenate of ship.coordinates) {
+        for(let coordinate of ship.coordinates) {
 
-            let row = coordenate[0]
-            let col = coordenate[1]
+            let row = coordinate[0]
+            let col = coordinate[1]
 
             let area = [[row - 1, col], [row - 1, col - 1], [row - 1, col + 1],
                         [row + 1, col], [row + 1, col - 1], [row + 1, col + 1],
@@ -103,25 +106,53 @@ class GameBoard {
                 if(arr[0] < 0 || arr[1] < 0 ||
                    arr[0] > (this.rowQuantity - 1) || arr[1] > (this.columnQuantity - 1)) continue
 
-                if(!this.adjacencyList[arr[0]].includes(arr[1])) this.adjacencyList[arr[0]].push(arr[1]) 
+                if(!adjacencyList[arr[0]].includes(arr[1])) adjacencyList[arr[0]].push(arr[1]) 
             }    
         }
     }
 
     clear() {
 
-        this.adjacencyList = [[], [], [], [], [],
-        [], [], [], [], []]
-
+        this.shipHitList =  [[], [], [], [], [], [], [], [], [], []]
+        this.waterHitList = [[], [], [], [], [], [], [], [], [], []]
         this.ships = []
+        this.shipsSunk = []
     }
 
-    receiveAttack(y, x){
+    receiveAttack(point){
+    
+        let hitOnTarget = false
 
-      //this.adjacencyList[x][y]
+        for(let ship of this.ships) {
 
-      return [x, y]
+            for(let coordinate of ship.coordinates){
 
+                if(coordinate[0] === point[0] && coordinate[1] === point[1]) {
+
+                    ship.hit()
+                    if(ship.isSunk) this.allShipsSunk(ship)
+                    this.shipHitList[point[0]].push(point[1])             
+                    hitOnTarget = true
+
+                    break
+                }
+            }
+
+            if(hitOnTarget) break
+        } 
+
+        if(hitOnTarget === false) this.waterHitList[point[0]].push(point[1])
     }
+
+    allShipsSunk(ship) {
+
+        this.shipsSunk.push(ship)
+
+        if(!this.shipsSunk.length === 5) return
+
+        //ACA ALGO HARIA PARA AVISAR QUE ESTAN TODOS UNDIDOS
+    }
+
+
 }
 

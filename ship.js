@@ -13,17 +13,20 @@ class Ship {
     }
 
     hit() {
-        this.#hitCounter ++
 
-        this./* # */isSunk()
+        this.#hitCounter ++
+        this.#sunkCheck()
     }
 
-    // Comento el PRIVATE porque Jest me tira error.. creo que no lo reconoce, igual que con es6 modules.
-    /* # */isSunk(){
+    #sunkCheck(){
  
         if(this.#hitCounter === this.length) {
             this.#isSunk = true
         }
+    }
+
+    get isSunk(){
+        return this.#isSunk
     }
 
 }

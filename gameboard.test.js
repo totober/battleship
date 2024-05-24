@@ -16,16 +16,13 @@ it("has properties", () => {
 
     expect(game).toHaveProperty("rowQuantity")
     expect(game).toHaveProperty("columnQuantity")
-    expect(game).toHaveProperty("adjacencyList")
 })
 
 it("has a method", () => {
 
     expect(game).toHaveProperty("receiveAttack")
-    expect(game).toHaveProperty("createShips")
     expect(game).toHaveProperty("placeShips")
     expect(game).toHaveProperty("clear")
-    expect(game).toHaveProperty("encloseShip")
 })
 
 
