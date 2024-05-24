@@ -10,14 +10,13 @@ class GameBoard {
         this.adjacencyList = [[], [], [], [], [],
                               [], [], [], [], []]
         this.ships = []
-
     }
 
     createShip(){
 
         let shipTypes = [{type: "carrier", length: 5}, {type: "battleship", length: 4}, 
                         {type: "destroyer", length: 3}, {type: "submarine", length: 3}, 
-                        {type: "patrol boat", length: 2}] /* [{type: "test", length: 5}] */
+                        {type: "patrol boat", length: 2}]
                     
         let ships = []
 
@@ -52,23 +51,14 @@ class GameBoard {
 
                     if(this.adjacencyList[loopRow].includes(loopCol)){
 
-                        while(coord.length > 0) {
-
-                            let [row, col] = coord.pop()
-
-                            let index = this.adjacencyList[row].indexOf(col)
-                            this.adjacencyList[row].splice(index, 1)
-                        }
-
+                        ship.coordinate = []
                         ships.unshift(ship)
                         this.ships.pop()
-                        ship.coordinate = []
 
                         break
                     }
 
                     coord.push([loopRow, loopCol])
-                    this.adjacencyList[loopRow].push(loopCol)
                     ship.coordinate.push([loopRow, loopCol])
 
                     if(vertical) {
@@ -79,7 +69,7 @@ class GameBoard {
                             continue
                         }
     
-                        loopRow = randomRow - i
+                        loopRow = randomRow - (ship.length - (i + 1))
 
                     } else {
 
@@ -89,7 +79,7 @@ class GameBoard {
                             continue
                         }
     
-                        loopCol = randomCol - i
+                        loopCol = randomRow - (ship.length - (i + 1))
                     }
                 }
 
@@ -105,18 +95,14 @@ class GameBoard {
 
         for(let coord of ship.coordinate) {
 
-            console.log("coord", coord)
-
             let row = coord[0]
             let col = coord[1]
 
             let area = [[row - 1, col], [row - 1, col - 1], [row - 1, col + 1],
                         [row + 1, col], [row + 1, col - 1], [row + 1, col + 1],
-                        [row, col - 1], [row, col + 1]]
+                        [row, col], [row, col - 1], [row, col + 1]]
 
             for(let arr of area) {
-
-                console.log("arr", arr)
 
                 if(arr[0] < 0 || arr[1] < 0 ||
                    arr[0] > (this.rowQuantity - 1) || arr[1] > (this.columnQuantity - 1)) continue
@@ -124,6 +110,15 @@ class GameBoard {
                 if(!this.adjacencyList[arr[0]].includes(arr[1])) this.adjacencyList[arr[0]].push(arr[1]) 
             }    
         }
+    }
+
+    clear() {
+
+        this.adjacencyList = [[], [], [], [], [],
+        [], [], [], [], []]
+
+        this.ships = []
+
     }
 
     receiveAttack(y, x){
