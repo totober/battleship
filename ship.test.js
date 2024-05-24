@@ -13,8 +13,9 @@ it("is a function", () => {
 
 it("have properties", () => {
 
-    //expect(Ship).toHaveProperty("type")
-    expect(Ship).toHaveProperty("length")
+    expect(ship).toHaveProperty("type")
+    expect(ship).toHaveProperty("length")
+    expect(ship).toHaveProperty("coordinates")
 })
 
 it("have propeties values", () => {
