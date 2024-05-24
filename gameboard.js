@@ -17,7 +17,7 @@ class GameBoard {
 
         let shipTypes = [{type: "carrier", length: 5}, {type: "battleship", length: 4}, 
                         {type: "destroyer", length: 3}, {type: "submarine", length: 3}, 
-                        {type: "patrol boat", length: 2}]
+                        {type: "patrol boat", length: 2}] /* [{type: "test", length: 5}] */
                     
         let ships = []
 
@@ -29,63 +29,40 @@ class GameBoard {
         return ships    
     }
 
-    placeShip(/* randomCol, randomRow */) {
+    placeShip() {
 
         let ships = this.createShip()
 
-        let index = 0
+        while(ships.length > 0) {
 
-        // solo para testear
-        //let coord = []
 
-        while( ships.length > 0 /* index < 1 */) {
-
-            //index ++
-
-            let randomRow =  Math.floor(Math.random() * 10)   // 7  MOCKING NUMBER
-            let randomCol =  Math.floor(Math.random() * 10)  //6  MOCKING NUMBER
-            let vertical =  Math.floor(Math.random() * 2)
+            let randomRow =  Math.floor(Math.random() * 10)
+            let randomCol =  Math.floor(Math.random() * 10)
+            let vertical =   Math.floor(Math.random() * 2)
     
             let loopRow = randomRow
             let loopCol = randomCol 
     
             let ship = ships.shift()
-
             this.ships.push(ship)
 
-          /*   if(vertical) { */
-
-                // este es el que va
-                let coord = []
+            let coord = []
 
                 for(let i = 0; i < ship.length; i++){
 
-                    if(/* this.adjacencyList[loopRow].length > 0 */ this.adjacencyList[loopRow].includes(loopCol)){
-
-                        console.log("a ver topus")
+                    if(this.adjacencyList[loopRow].includes(loopCol)){
 
                         while(coord.length > 0) {
 
-                            let  [row, col] = coord.pop()
+                            let [row, col] = coord.pop()
 
-                           /*  let index
-
-                           for(let arr of this.adjacencyList[row]){
-                               index = arr.indexOf(col, ship)
-                           }
-
-                          this.adjacencyList[row].splice(index, 1) */
-
-                          let index = this.adjacencyList[row].indexOf(col)
-                          this.adjacencyList[row].splice(index, 1)
+                            let index = this.adjacencyList[row].indexOf(col)
+                            this.adjacencyList[row].splice(index, 1)
                         }
 
                         ships.unshift(ship)
                         this.ships.pop()
                         ship.coordinate = []
-
-                        // esto es solo para la test
-                        //this.adjacencyList[loopRow] = ["OVERLAP"]
 
                         break
                     }
@@ -113,21 +90,41 @@ class GameBoard {
                         }
     
                         loopCol = randomCol - i
-
                     }
-                
-                    
                 }
 
                 coord = []
-            /* } */
-    
+
+                if(ship.coordinate.length > 0) this.borders(ship)
         }
         
         return this.adjacencyList
-       //return coord 
     }
     
+    borders(ship){
+
+        for(let coord of ship.coordinate) {
+
+            console.log("coord", coord)
+
+            let row = coord[0]
+            let col = coord[1]
+
+            let area = [[row - 1, col], [row - 1, col - 1], [row - 1, col + 1],
+                        [row + 1, col], [row + 1, col - 1], [row + 1, col + 1],
+                        [row, col - 1], [row, col + 1]]
+
+            for(let arr of area) {
+
+                console.log("arr", arr)
+
+                if(arr[0] < 0 || arr[1] < 0 ||
+                   arr[0] > (this.rowQuantity - 1) || arr[1] > (this.columnQuantity - 1)) continue
+
+                if(!this.adjacencyList[arr[0]].includes(arr[1])) this.adjacencyList[arr[0]].push(arr[1]) 
+            }    
+        }
+    }
 
     receiveAttack(y, x){
 
