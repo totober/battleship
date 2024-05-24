@@ -8,7 +8,7 @@ class Ship {
     constructor({type, length}){
         this.length = length
         this.type = type
-        this.coordinate = []
+        this.coordinates = []
     
     }
 

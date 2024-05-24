@@ -12,91 +12,87 @@ class GameBoard {
         this.ships = []
     }
 
-    createShip(){
+    createShips(){
 
         let shipTypes = [{type: "carrier", length: 5}, {type: "battleship", length: 4}, 
                         {type: "destroyer", length: 3}, {type: "submarine", length: 3}, 
                         {type: "patrol boat", length: 2}]
                     
-        let ships = []
+        let shipsQueue = []
 
         for(let ship of shipTypes){
   
-            ships.push(new Ship(ship))            
+            shipsQueue.push(new Ship(ship))            
         }
 
-        return ships    
+        return shipsQueue    
     }
 
-    placeShip() {
+    placeShips() {
 
-        let ships = this.createShip()
+        let shipsQueue = this.createShips()
 
-        while(ships.length > 0) {
+        while(shipsQueue.length > 0) {
 
 
             let randomRow =  Math.floor(Math.random() * 10)
             let randomCol =  Math.floor(Math.random() * 10)
             let vertical =   Math.floor(Math.random() * 2)
     
-            let loopRow = randomRow
-            let loopCol = randomCol 
+            let randomRowCopy = randomRow
+            let randomColCopy = randomCol 
     
-            let ship = ships.shift()
+            let ship = shipsQueue.shift()
             this.ships.push(ship)
 
-            let coord = []
 
                 for(let i = 0; i < ship.length; i++){
 
-                    if(this.adjacencyList[loopRow].includes(loopCol)){
+                    if(this.adjacencyList[randomRowCopy].includes(randomColCopy)){
 
-                        ship.coordinate = []
-                        ships.unshift(ship)
+                        ship.coordinates = []
+                        shipsQueue.unshift(ship)
                         this.ships.pop()
 
                         break
                     }
 
-                    coord.push([loopRow, loopCol])
-                    ship.coordinate.push([loopRow, loopCol])
+                    ship.coordinates.push([randomRowCopy, randomColCopy])
 
                     if(vertical) {
 
-                        if(loopRow < (this.rowQuantity - 1)) {
+                        if(randomRowCopy < (this.rowQuantity - 1)) {
                 
-                            loopRow ++
+                            randomRowCopy ++
                             continue
                         }
     
-                        loopRow = randomRow - (ship.length - (i + 1))
+                        randomRowCopy = randomRow - (ship.length - (i + 1))
 
                     } else {
 
-                        if(loopCol < (this.columnQuantity - 1)) {
+                        if(randomColCopy < (this.columnQuantity - 1)) {
                 
-                            loopCol ++
+                            randomColCopy ++
                             continue
                         }
     
-                        loopCol = randomRow - (ship.length - (i + 1))
+                        randomColCopy = randomCol - (ship.length - (i + 1))
                     }
                 }
 
-                coord = []
-
-                if(ship.coordinate.length > 0) this.borders(ship)
+                if(ship.coordinates.length > 0) this.encloseShip(ship)
         }
         
         return this.adjacencyList
     }
     
-    borders(ship){
+    encloseShip(ship){
 
-        for(let coord of ship.coordinate) {
+        for(let coordenate of ship.coordinates) {
 
-            let row = coord[0]
-            let col = coord[1]
+            let row = coordenate[0]
+            let col = coordenate[1]
 
             let area = [[row - 1, col], [row - 1, col - 1], [row - 1, col + 1],
                         [row + 1, col], [row + 1, col - 1], [row + 1, col + 1],
@@ -118,7 +114,6 @@ class GameBoard {
         [], [], [], [], []]
 
         this.ships = []
-
     }
 
     receiveAttack(y, x){
@@ -129,136 +124,4 @@ class GameBoard {
 
     }
 }
-
-
-
-
-
-/* 
-
-placeShip(){
-
-    let ships = []
-
-       for(let boat of this.ships){
-
-        ships.push(new Ship(boat))
-        
-       } 
-
-       // LOOP PADRE WHILE:
-       while(ships.length > 0) {
-
-        let randomRow = Math.floor(Math.random() * 10)
-        let randomCol = Math.floor(Math.random() * 10)
-        let vertical = Math.floor(Math.random() * 2)
-
-        let loopRow = randomRow
-        let loopCol = randomCol
-
-        let ship = ships.shift()
-
-        // si es vertical, voy cambiando la ROW
-        if(vertical) {
-
-            // guardo las coordenadas, para borrarlas si el barco no entra en el lugar
-            let coord = []
-
-            // voy loopeando por cada posicion que ocupa el barco (su length)
-            for(let i = 0; i < ship.length; i++){
-
-                // si alguna posicion del barco ya esta tomada, tengo que reiniciar todo el posicionamiento
-                // de ESTE barco (por eso fui guardando las coordenadas)
-                if(this.adjacencyList[loopRow].includes(loopRow)) {
-
-                    // mientras que haya coordenasas en el array, las voy eliminando
-                    while(coord.length > 0) {
-                        delete this.adjacencyList[coord.pop()]
-                    }
-
-                    // vuelvo a agregar el barco al inicio del array de barcos
-                    ships.unshift(ship)
-                    // y salgo de este loop, para vovler a empezae el loop PADRE WHILE
-                    break
-                }
-
-                // Si la posicion NO esta tomada, la guardo en la adjacencyList
-                this.adjacencyList[loopRow].push([loopCol, ship])
-
-                // y guardo esa coordenada en el array de coordenadas
-                coord.push(loopRow)
-
-               // si el numero de row es menor a 9, sumo una posicion y paso a la soguiente iteracion,
-               // desde una posicion mas  
-               if(loopRow < 9) {
-
-                    loopRow ++
-                    continue
-               } 
-
-               // pero si ya alcance el limite del board que es 9, REINICIO el valor de loopRow
-               // al valor que tenia al inicio (osea el primer valor, con el que inicie el loop)
-               // y le resto las posiciones que ya fui sumando.
-               // De esta manera puedo colocar el barco de forma equilibrada, usado primero el espacio
-               // disponible hacia abajo (desde el punto de partida) y luego hacia arriba 
-               loopRow = randomRow - i
-            }
-
-            
- 
- 
-        } // si no, voy cambiando la COLUMN
-         else {
-
-            let coord = []
-
-            for(let i = 0; i < ship.length; i++){
-
-                // si alguna posicion del barco ya esta tomada, tengo que reiniciar todo el posicionamiento
-                // de ESTE barco (por eso fui guardando las coordenadas)
-                if(this.adjacencyList[loopRow][loopCol].includes(loopCol)) {
-
-                    // mientras que haya coordenasas en el array, las voy eliminando
-                    while(coord.length > 0) {
-                        delete this.adjacencyList[loopRow][coord.pop()]
-                    }
-
-                    // vuelvo a agregar el barco al inicio del array de barcos
-                    ships.unshift(ship)
-                    // y salgo de este loop, para vovler a empezae el loop PADRE WHILE
-                    break
-                }
-
-                // Si la posicion NO esta tomada, la guardo en la adjacencyList
-                this.adjacencyList[loopRow][loopCol]
-
-                // y guardo esa coordenada en el array de coordenadas
-                coord.push(loopCol)
-
-               // si el numero de column es menor a 9, sumo una posicion y paso a la soguiente iteracion,
-               // desde una posicion mas  
-               if(loopCol < 9) {
-
-                    loopCol ++
-                    continue
-               } 
-
-               // pero si ya alcance el limite del board que es 9, REINICIO el valor de loopRow
-               // al valor que tenia al inicio (osea el primer valor, con el que inicie el loop)
-               // y le resto las posiciones que ya fui sumando.
-               // De esta manera puedo colocar el barco de forma equilibrada, usado primero el espacio
-               // disponible hacia abajo (desde el punto de partida) y luego hacia arriba 
-               loopCol = loopCol - i
-            }
-
-
- 
-        }
-
-       }  
-
-    }
-
-*/
-
 
