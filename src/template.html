@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batthleship</title>
+</head>
+<body>
+    <div class="wrapper">
+    <header>
+        <h1>Battleship!<h1>
+    </header>
+    <main>
+        <section class="player-one">
+            <div class="board">
+        
+            </div>
+            <div class="options">
+                <p class="player">Player</p>
+            </div>
+        </section>
+        <section class="player-two">
+            <div class="board">
+
+            </div>
+            <div class="options">
+                <p>Player</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        tobiasber
+    </footer>
+    </div>
+    <article class="mode-selection">
+        <section class="vs-player">
+            <p>Player One vs Player Two</p>  
+        </section>
+        <section class="vs-cpu">
+            <p>Player vs CPU</p>
+        </section>
+    </article>
+    <article class="dialog-vs-player child" id="close">
+        <div>
+            <label for="player-one">Player one name:</label>
+            <input type="text" name="player-one" id="player-one">
+        </div>
+        <div>
+            <label for="player-two">Player two name:</label>
+            <input type="text" name="player-two" id="player-two">
+        </div>
+        <div class="buttons">
+            <button>Cancel</button><button>Ready!</button>
+        </div>
+    </article>
+    <article class="dialog-vs-cpu child" id="close">
+        <div>
+            <label for="player-cpu">Player name:</label>
+            <input type="text" name="player-cpu" id="player-cpu">
+        </div>
+        <div class="buttons">
+            <button>Cancel</button><button>Ready!</button>
+        </div>
+    </article>
+</body>
+</html>
