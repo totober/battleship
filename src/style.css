@@ -13,10 +13,12 @@
 .blur{
 
     filter: blur(20px);
+    pointer-events: none;
 }
 
 #close {
 
+    animation: fade-out 0.7s ease-out;
     display: none;
 }
 
@@ -59,37 +61,31 @@ h1 {
 main {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    /* position: relative; */
 }
 
 article {
+    font-weight: 600;
     background-color: #fff;
+    border-radius: 5px;
+    /* Esto es lo necesario para que el pop-up quede en el medio */
     position: fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-
+    /* hasta aca */
+    cursor: pointer;
     animation: fade-in 0.7s ease-out;
 }
 
 
-/* dialog */article.mode-selection {
-    /* margin-inline: auto;
-    margin-block: auto; */
+article.mode-selection {
+
     display: flex;
     flex-direction: column;
-    /* justify-content: center;
-    align-items: center; */
 
-    min-width: var(--width);
+    min-width: 25vw;
     outline: none;
-
 }
-
-/* dialog.close {
-    display: none;
-    animation: fade-out 0.7s ease-out;
-} */
 
 @keyframes fade-in {
     0% {
@@ -120,27 +116,37 @@ article {
 }
 
 
-/* dialog */article.mode-selection > :first-child {
+article.mode-selection > :first-child {
     border-bottom: 2px solid black;
 }
 
 
-/* dialog */article section {
+article section {
+
     text-align: center;
     padding: 30px;
     margin-block: 0;
+    
+}
+
+article section p {
+    transition: ease-in-out 0.4s;
+}
+
+article section:hover p {
+
+    transform: scale(1.15);
 }
 
 /* DIALOGS CHIQUITOS */
 
-/* dialog */article.child{
+article.child{
 
     padding: 30px;
-    /* min-width: 25vw;    */
 
 }
 
-/* dialog */article.child div {
+article.child div {
 
     display: flex;
     flex-direction: column;
@@ -149,13 +155,42 @@ article {
     padding: 15px;
 }
 
-/* dialog */article.child div.buttons {
+article.child div.buttons {
 
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
     border-bottom: none;
 }
+
+input {
+    font-size: 16.5px;
+    font-weight: 500;
+    padding: 5px 15px;
+    border-radius: 50px;
+    outline: none;
+    border: 1px solid black;
+}
+
+button {
+
+    background-color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: auto;
+    border: 1px solid black;
+    box-shadow: 2px 2px 3px rgb(44, 44, 44);
+    transition: ease-in-out 0.3s;
+}
+
+button:active {
+
+    transform: scale(0.95);
+    box-shadow: 1px 1px 3px rgb(44, 44, 44);
+}
+
+
+
 
 
 
