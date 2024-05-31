@@ -1,7 +1,6 @@
 * {
     margin: 0;
     padding: 0;
-
 }
 
 :root {
@@ -10,6 +9,23 @@
 }
 
 /* /// CLASSES /// */
+
+.blur{
+
+    filter: blur(20px);
+}
+
+#close {
+
+    display: none;
+}
+
+.space {
+
+    padding: var();
+    margin: var();
+
+}
 
 .display-flex-col{
 
@@ -43,7 +59,109 @@ h1 {
 main {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    /* position: relative; */
 }
+
+article {
+    background-color: #fff;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    animation: fade-in 0.7s ease-out;
+}
+
+
+/* dialog */article.mode-selection {
+    /* margin-inline: auto;
+    margin-block: auto; */
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center;
+    align-items: center; */
+
+    min-width: var(--width);
+    outline: none;
+
+}
+
+/* dialog.close {
+    display: none;
+    animation: fade-out 0.7s ease-out;
+} */
+
+@keyframes fade-in {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scaleY(0);
+      display: none;
+    }
+  
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scaleY(1);
+      display: block;
+    }
+  }
+  
+  @keyframes fade-out {
+    0% {
+      opacity: 1;
+      transform: scaleY(1);
+      display: block;
+    }
+  
+    100% {
+      opacity: 0;
+      transform: scaleY(0);
+      display: none;
+    }
+}
+
+
+/* dialog */article.mode-selection > :first-child {
+    border-bottom: 2px solid black;
+}
+
+
+/* dialog */article section {
+    text-align: center;
+    padding: 30px;
+    margin-block: 0;
+}
+
+/* DIALOGS CHIQUITOS */
+
+/* dialog */article.child{
+
+    padding: 30px;
+    /* min-width: 25vw;    */
+
+}
+
+/* dialog */article.child div {
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border-bottom: 1px solid black;
+    padding: 15px;
+}
+
+/* dialog */article.child div.buttons {
+
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-bottom: none;
+}
+
+
+
+
+
+
 
 section {
     display: grid;
@@ -54,14 +172,24 @@ section {
 }
 
 .board {
+    display: grid;
+    grid-template-rows: repeat(10, 1fr);
+    grid-template-columns:  repeat(10, 1fr);
+
     margin: 15px;
     padding: 15px;
 }
 
-.board > div {
+.board div {
     border: 1px solid white;
-    height: 5px;
-    width: 5px;
+    min-width: 30px;
+    min-height: 30px;
+}
+
+.board div.ship {
+    border: 1px solid red;
+    background-color: white;
+
 }
 
 .options {
