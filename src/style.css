@@ -151,9 +151,18 @@ article.child div {
 
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
     border-bottom: 1px solid black;
     padding: 15px;
+}
+
+article.CpuMode.child div {
+    border-bottom: none;
+}
+
+article.child fieldset div {
+
+    flex-direction: row;
 }
 
 article.child div.buttons {

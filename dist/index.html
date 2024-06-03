@@ -43,21 +43,36 @@
     <article class="PlayerMode child" id="close">
         <div>
             <label for="player-one">Player one name:</label>
-            <input type="text" name="player-one" id="player-one">
+            <input type="text" name="player-name" id="player-one">
         </div>
         <div>
             <label for="player-two">Player two name:</label>
-            <input type="text" name="player-two" id="player-two">
+            <input type="text" name="player-name" id="player-two">
         </div>
         <div class="buttons">
             <button class="cancel">Cancel</button><button class="ok" data-mode ="PlayerMode">Ready!</button>
         </div>
     </article>
-    <article class="CpuMode child" id="close">
+    <article class="CpuMode child" id="close"> 
         <div>
             <label for="player-cpu">Player name:</label>
-            <input type="text" name="player-cpu" id="player-cpu">
-        </div>
+            <input type="text" name="player-name" id="player-cpu">
+        </div> 
+        <fieldset>
+            <legend>Select difficulty</legend>
+            <div>
+                <input type="radio" value="easy" id="easy" name="difficulty"> 
+                <label for="easy">Easy</label>
+            </div>
+            <div>
+                <input type="radio" value="medium" id="medium" name="difficulty" checked> 
+                <label for="medium">Medium</label>
+            </div>
+            <div>
+                <input type="radio" value="hard" id="hard" name="difficulty"> 
+                <label for="hard">Hard</label>
+            </div>
+        </fieldset>
         <div class="buttons">
             <button class="cancel">Cancel</button><button class="ok" data-mode ="CpuMode">Ready!</button>
         </div>

@@ -13,7 +13,8 @@ let elements = {
     dialogCpuMode: document.querySelector("article.CpuMode"),
     btnCancel: Array.from(document.querySelectorAll("button.cancel")),
     btnOk: Array.from(document.querySelectorAll("button.ok")),
-    inputs: Array.from(document.querySelectorAll("input")),
+    inputsNames: Array.from(document.querySelectorAll("[name=player-name]")),
+    inputsRadio: Array.from(document.querySelectorAll("[name=difficulty]")),
 
     init() {
         this.addListeners()
@@ -63,7 +64,7 @@ function cancelDialog(e){
 
     //if(e.key !== "Escape") return
     e.currentTarget.parentElement.parentElement.setAttribute("id", "close")
-    elements.inputs.forEach(input => input.value = "")
+    elements.inputsNames.forEach(input => input.value = "")
 
     openModeDialog()
 }
@@ -71,13 +72,13 @@ function cancelDialog(e){
 function approveDialog(e) {
 
     //if(e.key !== "Enter") return
-
     let mode = e.target.dataset.mode
 
     e.currentTarget.parentElement.parentElement.setAttribute("id", "close")
-    elements.inputs.forEach(input => input.value = "")
+    elements.inputsNames.forEach(input => input.value = "")
     elements.wrapper.classList.remove("blur")
 
+    console.log("inps", elements.inputsNames)
 
     let [playerOne, playerTwo] = gameModeData(mode)
     game(playerOne, playerTwo)
@@ -86,19 +87,28 @@ function approveDialog(e) {
 
 function gameModeData(mode){
 
-    let playerOne, playerTwo
+    let playerOne, playerTwo, difficulty
 
     if(mode === "PlayerMode") {
-        playerOne = elements.inputs[0].value || "Player One"
-        playerTwo = elements.inputs[1].value || "Player Two"
-    }
+        playerOne = elements.inputsNames[0].value || "Player One"
+        playerTwo = elements.inputsNames[1].value || "Player Two"
 
-    if(mode === "CpuMode") {
-        playerOne = elements.inputs[2].value || "Player One"
+        return [new Player(playerOne), new Player(playerTwo)]
+    }
+    else if(mode === "CpuMode") {
+        playerOne = elements.inputsNames[2].value || "Player One"
         playerTwo = "CPU"
+
+        elements.inputsRadio.forEach(input => {
+
+            if(input.checked) difficulty = input.value
+        })
+
+        console.log("difficulty", difficulty)
+
+        return [new Player(playerOne)]
     }
 
-    return [new Player(playerOne), new Player(playerTwo)]
 }
 
 function game(playerOne, playerTwo){
@@ -106,12 +116,6 @@ function game(playerOne, playerTwo){
     console.log("p1 game", playerOne, "p2 game", playerTwo)
 
 }
-
-
-
-
-
-
 
 
 
