@@ -33,14 +33,14 @@
     </footer>
     </div>
     <article class="mode-selection">
-        <section class="vs-player">
+        <section class="PlayerMode">
             <p>Player One vs Player Two</p>  
         </section>
-        <section class="vs-cpu">
+        <section class="CpuMode">
             <p>Player vs CPU</p>
         </section>
     </article>
-    <article class="dialog-vs-player child" id="close">
+    <article class="PlayerMode child" id="close">
         <div>
             <label for="player-one">Player one name:</label>
             <input type="text" name="player-one" id="player-one">
@@ -50,16 +50,16 @@
             <input type="text" name="player-two" id="player-two">
         </div>
         <div class="buttons">
-            <button>Cancel</button><button>Ready!</button>
+            <button class="cancel">Cancel</button><button class="ok" data-mode ="PlayerMode">Ready!</button>
         </div>
     </article>
-    <article class="dialog-vs-cpu child" id="close">
+    <article class="CpuMode child" id="close">
         <div>
             <label for="player-cpu">Player name:</label>
             <input type="text" name="player-cpu" id="player-cpu">
         </div>
         <div class="buttons">
-            <button>Cancel</button><button>Ready!</button>
+            <button class="cancel">Cancel</button><button class="ok" data-mode ="CpuMode">Ready!</button>
         </div>
     </article>
 </body>

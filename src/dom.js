@@ -2,13 +2,18 @@ import {Player} from "./player"
 import {GameBoard} from "./gameboard"
 import {Ship} from "./ship"
 
-export {elements}
+export {elements, }
 
 let elements = {
 
     wrapper: document.querySelector(".wrapper"),
     board: document.querySelector(".board"),
-    dialog: document.querySelector(/* "dialog" */"article"),
+    dialogMode: document.querySelector("article"),
+    dialogPlayerMode: document.querySelector("article.PlayerMode"),
+    dialogCpuMode: document.querySelector("article.CpuMode"),
+    btnCancel: Array.from(document.querySelectorAll("button.cancel")),
+    btnOk: Array.from(document.querySelectorAll("button.ok")),
+    inputs: Array.from(document.querySelectorAll("input")),
 
     init() {
         this.addListeners()
@@ -16,92 +21,91 @@ let elements = {
 
     addListeners() {
 
-        window.addEventListener("load", /* applyGrid */gameInit)
-        window.addEventListener("keydown", closeModal)
-        this.dialogChildren().forEach(child => child.addEventListener("click", gameModeSelection))
+        window.addEventListener("load", gameInit);
+        this.dialogChildren().forEach(child => child.addEventListener("click", gameModeSelection));
+        this.btnCancel.forEach(btn => btn.addEventListener("click", cancelDialog));
+        this.btnOk.forEach(btn => btn.addEventListener("click", approveDialog))
     },
 
     dialogChildren(){
 
-       return Array.from(this.dialog.children) 
-    }
+       return Array.from(this.dialogMode.children) 
+    },
 
 }
 
-function openModal(){
+function openModeDialog(){
 
-    if(elements.dialog.getAttribute("id") === "close") elements.dialog.removeAttribute("id")
+    if(elements.dialogMode.getAttribute("id") === "close") elements.dialogMode.removeAttribute("id")
     if(!elements.wrapper.classList.contains("blur")) elements.wrapper.classList.add("blur")
 
 }
 
-function closeModal(e){
-
-    if(e.key === "Escape") {
-        e.preventDefault()
-        elements.dialog.close()
-        //elements.dialog.classList.add("close")
-    }
-}
-
-
 function gameInit(){
 
     applyGrid()
-    openModal()
+    openModeDialog()
 
 }
 
 function gameModeSelection(e) {
 
-    console.log(e.currentTarget)
+    elements.dialogMode.setAttribute("id", "close")
 
-    e.currentTarget.parentElement.setAttribute("id", "close")
-    let target = e.currentTarget
+    let gameMode = e.currentTarget.className
 
-/*     if(target.className === "vs-player") {
-        console.log("VERSUS PLAYER")
-        let dialog = target.querySelector("dialog")
-        dialog.showModal()
-    }
-
-    if(target.className === "vs-cpu") {
-        console.log("VERSUS CPU")
-        let dialog = target.querySelector("dialog")
-        dialog.showModal()
-    } */
-
-    let gameMode = target.className
-
-    let dialog = document.querySelector(`.dialog-${gameMode}`)
+    let dialog = elements[`dialog${gameMode}`]
 
     if(dialog.getAttribute("id") === "close") dialog.removeAttribute("id")
-    //if(!elements.wrapper.classList.contains("blur")) elements.wrapper.classList.add("blur")
-
-    let [btnCancel, btnOk] = Array.from(dialog.querySelectorAll("button"))
-
-    console.log("cancel", btnCancel)
-    console.log("ok", btnOk)
-
-    btnCancel.addEventListener("click", cancelDialog)
-    //btnOk.addEventListener("click",)
-    
-
 }
 
 function cancelDialog(e){
 
-    console.log("donde estoy", e.currentTarget.parentElement)
+    //if(e.key !== "Escape") return
+    e.currentTarget.parentElement.parentElement.setAttribute("id", "close")
+    elements.inputs.forEach(input => input.value = "")
+
+    openModeDialog()
+}
+
+function approveDialog(e) {
+
+    //if(e.key !== "Enter") return
+
+    let mode = e.target.dataset.mode
 
     e.currentTarget.parentElement.parentElement.setAttribute("id", "close")
+    elements.inputs.forEach(input => input.value = "")
+    elements.wrapper.classList.remove("blur")
 
-    openModal()
+
+    let [playerOne, playerTwo] = gameModeData(mode)
+    game(playerOne, playerTwo)
 }
 
 
+function gameModeData(mode){
 
+    let playerOne, playerTwo
 
+    if(mode === "PlayerMode") {
+        playerOne = elements.inputs[0].value || "Player One"
+        playerTwo = elements.inputs[1].value || "Player Two"
+    }
 
+    if(mode === "CpuMode") {
+        playerOne = elements.inputs[2].value || "Player One"
+        playerTwo = "CPU"
+    }
+
+    return [new Player(playerOne), new Player(playerTwo)]
+}
+
+function game(playerOne, playerTwo){
+
+    console.log("p1 game", playerOne, "p2 game", playerTwo)
+
+}
 
 
 
