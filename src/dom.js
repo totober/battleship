@@ -7,7 +7,7 @@ export {elements, }
 let elements = {
 
     wrapper: document.querySelector(".wrapper"),
-    board: document.querySelector(".board"),
+    boards: Array.from(document.querySelectorAll(".board")),
     dialogMode: document.querySelector("article"),
     dialogPlayerMode: document.querySelector("article.PlayerMode"),
     dialogCpuMode: document.querySelector("article.CpuMode"),
@@ -15,6 +15,7 @@ let elements = {
     btnOk: Array.from(document.querySelectorAll("button.ok")),
     inputsNames: Array.from(document.querySelectorAll("[name=player-name]")),
     inputsRadio: Array.from(document.querySelectorAll("[name=difficulty]")),
+    btnRandomArr: Array.from(document.querySelectorAll("button.random")),
 
     init() {
         this.addListeners()
@@ -22,10 +23,11 @@ let elements = {
 
     addListeners() {
 
-        window.addEventListener("load", gameInit);
+        window.addEventListener("load", openModeDialog);
         this.dialogChildren().forEach(child => child.addEventListener("click", gameModeSelection));
         this.btnCancel.forEach(btn => btn.addEventListener("click", cancelDialog));
-        this.btnOk.forEach(btn => btn.addEventListener("click", approveDialog))
+        this.btnOk.forEach(btn => btn.addEventListener("click", approveDialog));
+        this.btnRandomArr.forEach(btn => btn.addEventListener("click", randomShips));
     },
 
     dialogChildren(){
@@ -35,17 +37,44 @@ let elements = {
 
 }
 
+function createElement(element, className, secondClassName){
+
+    let el = document.createElement(element)
+    el.classList.add(className)
+
+    if(secondClassName) el.classList.add(secondClassName)
+
+    return el
+}
+
+function createGrid(board){
+
+    let num = 10
+
+    for(let i = 0; i < num; i++) {
+
+        for(let j = 0; j < num; j++) {
+
+            let quadrant = createElement("div", `row-${i}`, `col-${j}`)
+            quadrant.setAttribute("data-q", `${i}-${j}`)
+            quadrant.addEventListener("click", /* identifyQuadrant */ hitListener)
+            board.appendChild(quadrant) 
+        } 
+    }
+}
+
+function applyGrid() {
+
+    for(let board of elements.boards) createGrid(board)
+
+    //displayBoard()
+}
+
+
 function openModeDialog(){
 
     if(elements.dialogMode.getAttribute("id") === "close") elements.dialogMode.removeAttribute("id")
     if(!elements.wrapper.classList.contains("blur")) elements.wrapper.classList.add("blur")
-
-}
-
-function gameInit(){
-
-    applyGrid()
-    openModeDialog()
 
 }
 
@@ -56,8 +85,7 @@ function gameModeSelection(e) {
     let gameMode = e.currentTarget.className
 
     let dialog = elements[`dialog${gameMode}`]
-
-    if(dialog.getAttribute("id") === "close") dialog.removeAttribute("id")
+    dialog.removeAttribute("id")
 }
 
 function cancelDialog(e){
@@ -78,10 +106,8 @@ function approveDialog(e) {
     elements.inputsNames.forEach(input => input.value = "")
     elements.wrapper.classList.remove("blur")
 
-    console.log("inps", elements.inputsNames)
-
-    let [playerOne, playerTwo] = gameModeData(mode)
-    game(playerOne, playerTwo)
+    /* let [playerOne, playerTwo] =  */gameModeData(mode)
+    //game(playerOne, playerTwo)
 }
 
 
@@ -90,92 +116,53 @@ function gameModeData(mode){
     let playerOne, playerTwo, difficulty
 
     if(mode === "PlayerMode") {
-        playerOne = elements.inputsNames[0].value || "Player One"
-        playerTwo = elements.inputsNames[1].value || "Player Two"
 
-        return [new Player(playerOne), new Player(playerTwo)]
+        playerOne = new Player(elements.inputsNames[0].value || "Player One")
+        playerTwo = new Player(elements.inputsNames[1].value || "Player Two")
+
+        //return [new Player(playerOne), new Player(playerTwo)]
+        //game([new Player(playerOne), new Player(playerTwo)])
+
+        //return
     }
+    
     else if(mode === "CpuMode") {
-        playerOne = elements.inputsNames[2].value || "Player One"
-        playerTwo = "CPU"
+
+        playerOne = new Player(elements.inputsNames[2].value || "Player One")
+        playerTwo = new Player("CPU")
 
         elements.inputsRadio.forEach(input => {
-
             if(input.checked) difficulty = input.value
         })
 
-        console.log("difficulty", difficulty)
+        //return [new Player(playerOne)]
+        //game([new Player(playerOne), new Player(playerTwo)], difficulty)
 
-        return [new Player(playerOne)]
+        //return
     }
 
+    storeData(mode, playerOne, playerTwo)
 }
 
-function game(playerOne, playerTwo){
+function game(playersArr, difficulty = null){
 
-    console.log("p1 game", playerOne, "p2 game", playerTwo)
+    applyGrid()
 
-}
+    let index = 0
 
+    for(let player of playersArr) {
 
+        displayBoard(player, elements.boards[index])
 
-
-function createElement(element, className, secondClassName){
-
-    let el = document.createElement(element)
-    el.classList.add(className)
-
-    if(secondClassName) el.classList.add(secondClassName)
-
-    return el
-}
-
-function applyGrid() {
-
-    let boards = Array.from(document.querySelectorAll(".board"))
-
-    for(let board of boards) createGrid(board)
-
-    displayBoard()
-}
-
-function createGrid(board){
-
-    let num = 10
-
-/*     for(let i = 0; i < num; i++) {
-
-        let rowQuadrant = createElement("div", "row", `${i}`)
-        board.appendChild(rowQuadrant)
-
-        for(let j = 0; j < num; j++) {
-
-            let colQuadrant = createElement("div", "col", `${j}`)
-            colQuadrant.addEventListener("click", identifyQuadrant)
-            rowQuadrant.appendChild(colQuadrant)
-        }
-    } */
-
-    for(let i = 0; i < num; i++) {
-
-        for(let j = 0; j < num; j++) {
-
-            let quadrant = createElement("div", `row-${i}`, `col-${j}`)
-            quadrant.setAttribute("data-q", `${i}-${j}`)
-            quadrant.addEventListener("click", /* identifyQuadrant */ hitListener)
-            board.appendChild(quadrant) 
-        } 
+        index ++
     }
+
+
 }
 
+function displayBoard(player, board){
 
-function displayBoard(/* player */){
 
-
-    let section = document.querySelector(".player-one")
-    let board = section.firstElementChild
-
-    let player = new Player("player one") // esto deberia crearlo antes, afuera de esta func
 
    /*  player.gameBoard.placeShips()
     let ships = player.gameBoard.ships
@@ -278,3 +265,22 @@ function hitListener(e) {
 
 
 }
+
+function storeData(mode, playerOne, playerTwo) {
+
+    let state = {
+        mode: `${mode}`,
+        players: {
+            playerOne: `${playerOne}`,
+            playerTwo: `${playerTwo}`
+        }
+    }
+
+    localStorage.setItem("state", JSON.stringify(state)) 
+}
+
+function retrieveData() {
+
+    return JSON.parse(localStorage.getItem("state"))
+}
+
