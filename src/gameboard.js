@@ -4,15 +4,25 @@ export {GameBoard}
 
 class GameBoard {
 
-    constructor(rowQuantity = 10, columnQuantity = 10 ){
+    constructor(rowQuantity = 10, columnQuantity = 10){
 
         this.rowQuantity = rowQuantity,
         this.columnQuantity = columnQuantity,
         this.ships = [],
         this.shipsSunk = [],
-        this.waterHitList = [[], [], [], [], [], [], [], [], [], []],
-        this.shipHitList = [[], [], [], [], [], [], [], [], [], []]      
+        this.waterHitList =  [[], [], [], [], [], [], [], [], [], []],
+        this.shipHitList =  [[], [], [], [], [], [], [], [], [], []]   
     }
+
+    setProperties(state){
+
+        this.rowQuantity = state.rowQuantity;
+        this.columnQuantity = state.columnQuantity;
+        this.ships = state.ships;
+        this.shipsSunk = state.shipsSunk;
+        this.waterHitList = state.waterHitList;
+        this.shipHitList = state.shipHitList
+    };
 
     #createShips(){
 
@@ -87,7 +97,7 @@ class GameBoard {
                 if(ship.coordinates.length > 0) this.#encloseShip(ship, adjacencyList)
         }
         
-        return adjacencyList
+        //return adjacencyList
     }
     
     #encloseShip(ship, adjacencyList){

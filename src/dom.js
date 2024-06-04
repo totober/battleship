@@ -1,8 +1,10 @@
 import {Player} from "./player"
 import {GameBoard} from "./gameboard"
 import {Ship} from "./ship"
+import {storeData, retrieveData} from "./storage"
+import {gameModeData, displayShip, hitListener} from "./display"
 
-export {elements, }
+export {elements, createGrid}
 
 let elements = {
 
@@ -24,10 +26,11 @@ let elements = {
     addListeners() {
 
         window.addEventListener("load", openModeDialog);
+        window.addEventListener("load", applyGrid);
         this.dialogChildren().forEach(child => child.addEventListener("click", gameModeSelection));
         this.btnCancel.forEach(btn => btn.addEventListener("click", cancelDialog));
         this.btnOk.forEach(btn => btn.addEventListener("click", approveDialog));
-        this.btnRandomArr.forEach(btn => btn.addEventListener("click", randomShips));
+        this.btnRandomArr.forEach(btn => btn.addEventListener("click", displayShip));
     },
 
     dialogChildren(){
@@ -65,10 +68,13 @@ function createGrid(board){
 
 function applyGrid() {
 
-    for(let board of elements.boards) createGrid(board)
+    for(let board of elements.boards) {
 
-    //displayBoard()
+        //board.innerHTML = ""
+        createGrid(board) 
+    }
 }
+
 
 
 function openModeDialog(){
@@ -102,185 +108,12 @@ function approveDialog(e) {
     //if(e.key !== "Enter") return
     let mode = e.target.dataset.mode
 
+    /* let [playerOne, playerTwo] =  */gameModeData(mode)
+    //game(playerOne, playerTwo)
+
     e.currentTarget.parentElement.parentElement.setAttribute("id", "close")
     elements.inputsNames.forEach(input => input.value = "")
     elements.wrapper.classList.remove("blur")
-
-    /* let [playerOne, playerTwo] =  */gameModeData(mode)
-    //game(playerOne, playerTwo)
 }
 
-
-function gameModeData(mode){
-
-    let playerOne, playerTwo, difficulty
-
-    if(mode === "PlayerMode") {
-
-        playerOne = new Player(elements.inputsNames[0].value || "Player One")
-        playerTwo = new Player(elements.inputsNames[1].value || "Player Two")
-
-        //return [new Player(playerOne), new Player(playerTwo)]
-        //game([new Player(playerOne), new Player(playerTwo)])
-
-        //return
-    }
-    
-    else if(mode === "CpuMode") {
-
-        playerOne = new Player(elements.inputsNames[2].value || "Player One")
-        playerTwo = new Player("CPU")
-
-        elements.inputsRadio.forEach(input => {
-            if(input.checked) difficulty = input.value
-        })
-
-        //return [new Player(playerOne)]
-        //game([new Player(playerOne), new Player(playerTwo)], difficulty)
-
-        //return
-    }
-
-    storeData(mode, playerOne, playerTwo)
-}
-
-function game(playersArr, difficulty = null){
-
-    applyGrid()
-
-    let index = 0
-
-    for(let player of playersArr) {
-
-        displayBoard(player, elements.boards[index])
-
-        index ++
-    }
-
-
-}
-
-function displayBoard(player, board){
-
-
-
-   /*  player.gameBoard.placeShips()
-    let ships = player.gameBoard.ships
-
-    ships.forEach(ship => {
-
-        ship.coordinates.forEach(coord => {
-            
-            let [row, col] = coord
-
-            let quadrant = board.querySelector(`[data-q="${row}-${col}"]`)
-
-            quadrant.classList.add("ship")
-
-        })
-   }) */
-
-   displayShip(player, board)
-
-}
-
-function displayShip(player, board) {
-
-    player.gameBoard.placeShips()
-    let ships = player.gameBoard.ships
-
-    ships.forEach(ship => {
-
-        ship.coordinates.forEach(coord => {
-            
-            let [row, col] = coord
-
-            let quadrant = board.querySelector(`[data-q="${row}-${col}"]`)
-
-            quadrant.classList.add("ship")
-
-        })
-   })
-}
-
-function displayHit(player) {
-
-    let hits = player.gameBoard.shipHitList
-
-    for(let hit of hits) {
-
-        let [row, col] = hit
-
-        let quadrant = board.querySelector(`[data-q="${row}-${col}"]`)
-
-        quadrant.classList.add("hit")
-    }
-}
-
-function displayMiss(player) {
-
-    let misses = player.gameBoard.shipWaterList
-
-    for(let miss of misses) {
-
-        let [row, col] = miss
-
-        let quadrant = board.querySelector(`[data-q="${row}-${col}"]`)
-
-        quadrant.classList.add("miss")
-    }
-}
-
-function identifyQuadrant(e){
-
-    console.log("target", e.target)
-    console.log("target", e.target.parentElement.parentElement)
-
-    return [e.target, e.target.parentElement.parentElement]
-}
-
-function hitListener(e) {
-
-    let quadrant = e.target
-    let player = e.target.parentElement.parentElement.className
-
-    console.log("quadrant", quadrant)
-    console.log("player", player)
-
-// aca tendria que tener el player (tal vez guardado en la sesion) y desde ahi,
-// ir desplegando la data, segun sea player 1 o 2
-
-    ships.forEach(ship => {
-
-        ship.coordinates.forEach(coord => {
-            
-            let [row, col] = coord
-
-            let quadrant = board.querySelector(`[data-q="${row}-${col}"]`)
-
-            quadrant.classList.add("ship")
-
-        })
-   })
-
-
-}
-
-function storeData(mode, playerOne, playerTwo) {
-
-    let state = {
-        mode: `${mode}`,
-        players: {
-            playerOne: `${playerOne}`,
-            playerTwo: `${playerTwo}`
-        }
-    }
-
-    localStorage.setItem("state", JSON.stringify(state)) 
-}
-
-function retrieveData() {
-
-    return JSON.parse(localStorage.getItem("state"))
-}
 

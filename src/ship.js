@@ -5,11 +5,16 @@ class Ship {
     #hitCounter = 0
     #isSunk = false
 
-    constructor({type, length}){
+    constructor({length, type}){
         this.length = length
         this.type = type
         this.coordinates = []
-    
+    }
+
+    setProperties(state) {
+        this.length = state.length;
+        this.type = state.type;
+        this.coordinates = state.coordinates
     }
 
     hit() {
