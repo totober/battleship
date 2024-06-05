@@ -2,9 +2,10 @@ import {Player} from "./player"
 import {GameBoard} from "./gameboard"
 import {Ship} from "./ship"
 import {storeData, retrieveData} from "./storage"
-import {gameModeData, displayShip, hitListener} from "./display"
+import {gameModeData, createRandomShips, hitListener} from "./display"
 
 export {elements, createGrid}
+
 
 let elements = {
 
@@ -30,7 +31,7 @@ let elements = {
         this.dialogChildren().forEach(child => child.addEventListener("click", gameModeSelection));
         this.btnCancel.forEach(btn => btn.addEventListener("click", cancelDialog));
         this.btnOk.forEach(btn => btn.addEventListener("click", approveDialog));
-        this.btnRandomArr.forEach(btn => btn.addEventListener("click", displayShip));
+        this.btnRandomArr.forEach(btn => btn.addEventListener("click", createRandomShips));
     },
 
     dialogChildren(){
@@ -52,6 +53,8 @@ function createElement(element, className, secondClassName){
 
 function createGrid(board){
 
+    board.innerHTML = ""
+
     let num = 10
 
     for(let i = 0; i < num; i++) {
@@ -59,7 +62,7 @@ function createGrid(board){
         for(let j = 0; j < num; j++) {
 
             let quadrant = createElement("div", `row-${i}`, `col-${j}`)
-            quadrant.setAttribute("data-q", `${i}-${j}`)
+            quadrant.setAttribute("data-square", `${i}-${j}`)
             quadrant.addEventListener("click", /* identifyQuadrant */ hitListener)
             board.appendChild(quadrant) 
         } 

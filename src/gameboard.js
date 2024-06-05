@@ -10,8 +10,9 @@ class GameBoard {
         this.columnQuantity = columnQuantity,
         this.ships = [],
         this.shipsSunk = [],
-        this.waterHitList =  [[], [], [], [], [], [], [], [], [], []],
-        this.shipHitList =  [[], [], [], [], [], [], [], [], [], []]   
+        this.waterHitList = [] /* [[], [], [], [], [], [], [], [], [], []] */,
+        this.shipHitList = [] /* [[], [], [], [], [], [], [], [], [], []] */,
+        this.shipsCoords = []   
     }
 
     setProperties(state){
@@ -21,7 +22,8 @@ class GameBoard {
         this.ships = state.ships;
         this.shipsSunk = state.shipsSunk;
         this.waterHitList = state.waterHitList;
-        this.shipHitList = state.shipHitList
+        this.shipHitList = state.shipHitList;
+        this.shipsCoords = state.shipsCoords
     };
 
     #createShips(){
@@ -34,13 +36,16 @@ class GameBoard {
 
         for(let ship of shipTypes){
   
-            shipsQueue.push(new Ship(ship))            
+            shipsQueue.push(new Ship(ship.length, ship.type))          
         }
 
         return shipsQueue    
     }
 
     placeShips() {
+
+        this.ships = []
+        this.shipsCoords = []
 
         let shipsQueue = this.#createShips()
         let adjacencyList = [[], [], [], [], [], [], [], [], [], []]
@@ -95,9 +100,11 @@ class GameBoard {
                 }
 
                 if(ship.coordinates.length > 0) this.#encloseShip(ship, adjacencyList)
+
         }
-        
-        //return adjacencyList
+
+        this.#shipsRefs()
+
     }
     
     #encloseShip(ship, adjacencyList){
@@ -127,36 +134,69 @@ class GameBoard {
         this.waterHitList = [[], [], [], [], [], [], [], [], [], []]
         this.ships = []
         this.shipsSunk = []
+        this.shipsCoords = []
     }
 
-    receiveAttack(point){
+    receiveAttack(square){
     
         let hitOnTarget = false
 
+        //console.log("A VER LOS SHIPS", this.ships)
+
         for(let ship of this.ships) {
+
+            //console.log("SHIP", ship)
 
             for(let coordinate of ship.coordinates){
 
-                if(coordinate[0] === point[0] && coordinate[1] === point[1]) {
+                //console.log("COORD", coordinate)
+
+                if(coordinate[0] === square[0] && coordinate[1] === square[1]) {
+
+                    console.log("SHIP", ship)
 
                     ship.hit()
                     if(ship.isSunk) this.allShipsSunk(ship)
-                    this.shipHitList[point[0]].push(point[1])             
+                    //this.shipHitList[square[0]].push(square[1])     
+                    this.shipHitList.push(square)        
                     hitOnTarget = true
 
                     break
                 }
             }
 
-            if(hitOnTarget) break
+            //if(hitOnTarget) break
+
+            if(hitOnTarget) return true
         } 
 
-        if(hitOnTarget === false) this.waterHitList[point[0]].push(point[1])
+        //if(hitOnTarget === false) this.waterHitList[square[0]].push(square[1])
+
+        //this.waterHitList[square[0]].push(square[1])
+        this.waterHitList.push(square)
+
+        return false
+    }
+
+    #shipsRefs() {
+
+        for(let ship of this.ships) {
+
+            let coordArr = []
+
+            for(let coordinate of ship.coordinates) coordArr.push(coordinate) 
+
+            this.shipsCoords.push(coordArr)
+        }
     }
 
     allShipsSunk(ship) {
 
+        console.log("SHIP SUNKED", ship)
+
         this.shipsSunk.push(ship)
+
+        console.log("SHIP SUNKED ARRAY", this.shipsSunk)
 
         if(!this.shipsSunk.length === 5) return
 

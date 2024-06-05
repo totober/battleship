@@ -2,10 +2,10 @@ export {Ship}
 
 class Ship {
 
-    #hitCounter = 0
+    hitCounter = 0
     #isSunk = false
 
-    constructor({length, type}){
+    constructor(length = null, type = null){
         this.length = length
         this.type = type
         this.coordinates = []
@@ -15,17 +15,18 @@ class Ship {
         this.length = state.length;
         this.type = state.type;
         this.coordinates = state.coordinates
+        this.hitCounter = state.hitCounter
     }
 
     hit() {
 
-        this.#hitCounter ++
+        this.hitCounter ++
         this.#sunkCheck()
     }
 
     #sunkCheck(){
  
-        if(this.#hitCounter === this.length) {
+        if(this.hitCounter === this.length) {
             this.#isSunk = true
         }
     }
@@ -33,5 +34,4 @@ class Ship {
     get isSunk(){
         return this.#isSunk
     }
-
 }

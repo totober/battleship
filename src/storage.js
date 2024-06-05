@@ -1,6 +1,7 @@
 import {Player} from "./player"
+import {Ship} from "./ship"
 
-export {storeData, retrieveData}
+export {storeData, retrieveData, updateData}
 
 
 function storeData(mode, playerOne, playerTwo) {
@@ -10,11 +11,12 @@ function storeData(mode, playerOne, playerTwo) {
         players: [playerOne, playerTwo]
     }
 
-    console.log("STATE", state)
-    console.log("PLAYERS", state.players)
-    console.log("p1", state.players[0])
-
     localStorage.setItem("state", JSON.stringify(state)) 
+}
+
+function updateData(state){
+
+    localStorage.setItem("state", JSON.stringify(state))
 }
 
 
@@ -22,34 +24,32 @@ function retrieveData() {
 
    let state = JSON.parse(localStorage.getItem("state"))
 
-   console.log("a ver ahora", state)
-
-   let playerOne  = new Player(state.players[0].name)
-   let playerTwo  = new Player(state.players[1].name)
-
+   let playerOne  = new Player(state.players[0].name, 0)
+   let playerTwo  = new Player(state.players[1].name, 1)
    let players = [playerOne, playerTwo]
 
-   let i = 0
 
-   for(let player of players) {
+    for(let i = 0; i < players.length; i++) {
 
-        player.gameBoard.setProperties(state.players[i].gameBoard)
+        players[i].gameBoard.setProperties(state.players[i].gameBoard)
 
-        let j = 0
+        let playerShips = players[i].gameBoard.ships
 
-        for(let ship of player.gameBoard.ships) {
 
-            ship.setProperties(state.players[i].gameBoard.ships[j])
+        for(let j = 0; j < playerShips.length; j++) {
 
-            j++
+            let shipInstance = new Ship(playerShips[j])
+
+            shipInstance.setProperties(state.players[i].gameBoard.ships[j])
+
+            // reemplazo la copia de datos del ship que estaba en JSON por 
+            // el ship instansiado y actualizado.
+            players[i].gameBoard.ships[j] = shipInstance
         }
 
-        i++
-   }
+    }
 
-   console.log("ARRAY OF PLAYERS", players)
-   console.log("inst p1", playerOne )
-   console.log("inst p2", playerTwo )
+    state.players = players
 
-   return players
+   return state
 }

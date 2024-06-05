@@ -237,6 +237,20 @@ section {
 
 }
 
+.board div.hit {
+    border: 1px solid red;
+    background-color: red;
+
+}
+
+.board div.miss {
+    border: 1px solid blue;
+    background-color: lightblue;
+
+}
+
+
+
 .options {
     margin: 15px;
     padding: 15px;
