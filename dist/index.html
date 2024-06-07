@@ -9,26 +9,29 @@
     <div class="wrapper">
     <header>
         <h1>Battleship!<h1>
+        <h3></h3>
     </header>
     <main>
         <section class="player-one">
             <div class="board" data-board="0"></div>
             <div class="options">
-                <div>
-                    <output>Player</output>
-                    <p>Press to randomly position your ships!</p>
-                    <button class="random" data-board="0">Ships!</button>
-                </div>
+                    <output></output>
+                    <div>
+                        <p>Press to randomly position your ships!</p>
+                        <button class="random" data-board="0">Ships!</button>
+                    </div>
+                    <button class="ready" data-ready="false">READY</button>
             </div>
         </section>
         <section class="player-two">
             <div class="board" data-board="1"></div>
             <div class="options">
-                <output>Player</output>
+                <output></output>
                 <div>
                     <p>Press to randomly position your ships!</p>
                     <button class="random" data-board="1">Ships!</button>
                 </div>
+                <button class="ready" data-ready="false">READY</button>
             </div>
         </section>
     </main>

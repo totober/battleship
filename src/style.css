@@ -5,7 +5,7 @@
 
 :root {
     box-sizing: border-box;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* /// CLASSES /// */
@@ -13,6 +13,10 @@
 .blur{
 
     filter: blur(20px);
+    pointer-events: none;
+}
+
+.unable {
     pointer-events: none;
 }
 
@@ -48,13 +52,19 @@ body{
 header {
 
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 
 }
 
 h1 {
-    color: white;
+    color: beige;
+    margin-bottom: 30px;
+}
+
+h3 {
+    color: beige;
 }
 
 /* /// MAIN /// */
@@ -222,7 +232,6 @@ section {
     grid-template-columns:  repeat(10, 1fr);
 
     margin: 15px;
-    padding: 15px;
 }
 
 .board div {
@@ -256,9 +265,10 @@ section {
     padding: 15px;
 }
 
-.options p {
-    color: white;
+.options p, output {
+    color: beige;
 }
+
 
 /* /// FOOTER /// */
 

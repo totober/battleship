@@ -156,7 +156,9 @@ class GameBoard {
                     console.log("SHIP", ship)
 
                     ship.hit()
-                    if(ship.isSunk) this.allShipsSunk(ship)
+                    //if(ship.isSunk) this.allShipsSunk(ship)
+                    if(ship.isSunk) this.shipsSunk.push(ship)
+
                     //this.shipHitList[square[0]].push(square[1])     
                     this.shipHitList.push(square)        
                     hitOnTarget = true
@@ -190,7 +192,7 @@ class GameBoard {
         }
     }
 
-    allShipsSunk(ship) {
+    /* allShipsSunk(ship) {
 
         console.log("SHIP SUNKED", ship)
 
@@ -198,11 +200,11 @@ class GameBoard {
 
         console.log("SHIP SUNKED ARRAY", this.shipsSunk)
 
-        if(!this.shipsSunk.length === 5) return
+        if(!this.shipsSunk.length === 5) return null
 
         //ACA ALGO HARIA PARA AVISAR QUE ESTAN TODOS UNDIDOS
-    }
-
-
+        return true
+    } */
+    
 }
 

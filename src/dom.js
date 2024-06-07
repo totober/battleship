@@ -1,8 +1,9 @@
-import {Player} from "./player"
-import {GameBoard} from "./gameboard"
-import {Ship} from "./ship"
-import {storeData, retrieveData} from "./storage"
-import {gameModeData, createRandomShips, hitListener} from "./display"
+import { Player } from "./player"
+import { GameBoard } from "./gameboard"
+import { Ship } from "./ship"
+import { storeData, retrieveData, updateData } from "./storage"
+import { displayBoard, displayShip, displayNames } from "./display"
+import { gameModeData, game, startGame, turn} from "./game"
 
 export {elements, createGrid}
 
@@ -19,6 +20,9 @@ let elements = {
     inputsNames: Array.from(document.querySelectorAll("[name=player-name]")),
     inputsRadio: Array.from(document.querySelectorAll("[name=difficulty]")),
     btnRandomArr: Array.from(document.querySelectorAll("button.random")),
+    btnReadyArr: Array.from(document.querySelectorAll("button.ready")),
+    outputArr: Array.from(document.querySelectorAll("output")),
+    title: document.querySelector("h3"),
 
     init() {
         this.addListeners()
@@ -28,10 +32,13 @@ let elements = {
 
         window.addEventListener("load", openModeDialog);
         window.addEventListener("load", applyGrid);
+        //window.addEventListener("load", game);
         this.dialogChildren().forEach(child => child.addEventListener("click", gameModeSelection));
         this.btnCancel.forEach(btn => btn.addEventListener("click", cancelDialog));
         this.btnOk.forEach(btn => btn.addEventListener("click", approveDialog));
+        this.btnOk.forEach(btn => btn.addEventListener("click", displayNames));
         this.btnRandomArr.forEach(btn => btn.addEventListener("click", createRandomShips));
+        this.btnReadyArr.forEach(btn => btn.addEventListener("click", startGame));
     },
 
     dialogChildren(){
@@ -54,6 +61,7 @@ function createElement(element, className, secondClassName){
 function createGrid(board){
 
     board.innerHTML = ""
+    board.classList.add("unable")
 
     let num = 10
 
@@ -63,7 +71,8 @@ function createGrid(board){
 
             let quadrant = createElement("div", `row-${i}`, `col-${j}`)
             quadrant.setAttribute("data-square", `${i}-${j}`)
-            quadrant.addEventListener("click", /* identifyQuadrant */ hitListener)
+            quadrant.addEventListener("click", hitListener)
+            quadrant.addEventListener("click", turn)
             board.appendChild(quadrant) 
         } 
     }
@@ -71,11 +80,7 @@ function createGrid(board){
 
 function applyGrid() {
 
-    for(let board of elements.boards) {
-
-        //board.innerHTML = ""
-        createGrid(board) 
-    }
+    for(let board of elements.boards) createGrid(board) 
 }
 
 
@@ -84,7 +89,6 @@ function openModeDialog(){
 
     if(elements.dialogMode.getAttribute("id") === "close") elements.dialogMode.removeAttribute("id")
     if(!elements.wrapper.classList.contains("blur")) elements.wrapper.classList.add("blur")
-
 }
 
 function gameModeSelection(e) {
@@ -111,12 +115,68 @@ function approveDialog(e) {
     //if(e.key !== "Enter") return
     let mode = e.target.dataset.mode
 
-    /* let [playerOne, playerTwo] =  */gameModeData(mode)
+    gameModeData(mode)
     //game(playerOne, playerTwo)
 
     e.currentTarget.parentElement.parentElement.setAttribute("id", "close")
     elements.inputsNames.forEach(input => input.value = "")
     elements.wrapper.classList.remove("blur")
+}
+
+
+
+
+
+function createRandomShips(e) {
+
+    let state =  retrieveData()
+
+    let whichPlayer = Number(e.currentTarget.dataset.board)
+ 
+    let player = state.players[whichPlayer]
+    let board = elements.boards[whichPlayer]
+
+    createGrid(board)
+
+    player.gameBoard.placeShips()
+
+    displayShip(player)
+
+    updateData(state)
+}
+
+
+function hitListener(e) {
+
+    let state = retrieveData()
+    //console.log("STATE HIT LISTENER", state)
+
+    let quadrant = e.target.dataset.square.split("-").map(str => Number(str))
+    //console.log("quadrant", quadrant)
+    let whichPlayer = Number(e.target.parentElement.dataset.board)
+
+    let player = state.players[whichPlayer]
+    //console.log("PLAYER", player)
+
+   let hitOnTarget = player.gameBoard.receiveAttack(quadrant)
+
+    //displayBoard()
+
+    //console.log("SHIPS DEL PLAYER", player.gameBoard.ships)
+
+    displayBoard(player, hitOnTarget)
+
+   
+
+    /* let shiphit = player.gameBoard.shipHitList
+    console.log("shiphit LIST", shiphit)
+    let waterhit = player.gameBoard.waterHitList
+    console.log("waterhit LIST", waterhit) */
+
+
+    updateData(state)
+
+    //turnToggle(player)
 }
 
 

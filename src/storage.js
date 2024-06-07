@@ -24,12 +24,14 @@ function retrieveData() {
 
    let state = JSON.parse(localStorage.getItem("state"))
 
-   let playerOne  = new Player(state.players[0].name, 0)
-   let playerTwo  = new Player(state.players[1].name, 1)
+   let playerOne  = new Player()
+   let playerTwo  = new Player()
    let players = [playerOne, playerTwo]
 
 
     for(let i = 0; i < players.length; i++) {
+
+        players[i].setProperties(state.players[i])
 
         players[i].gameBoard.setProperties(state.players[i].gameBoard)
 
