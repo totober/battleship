@@ -3,8 +3,13 @@ import {Player} from "./player"
 import {GameBoard} from "./gameboard"
 import {Ship} from "./ship"
 import {elements} from "./dom"
-//import { game } from "./game"
+import { Game } from "./game"
 
+export { GAME }
+
+let GAME = new Game()
 elements.init()
-//game()
+
+
+
 

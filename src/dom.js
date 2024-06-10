@@ -2,10 +2,10 @@ import { Player } from "./player"
 import { GameBoard } from "./gameboard"
 import { Ship } from "./ship"
 import { storeData, retrieveData, updateData } from "./storage"
-import { displayBoard, displayShip, displayNames } from "./display"
-import { gameModeData, game, startGame, turn} from "./game"
+import { displayBoard, displayShip, displayNames, displayTurn } from "./display"
+import { GAME } from "./index"
 
-export {elements, createGrid}
+export {elements, createGrid, playersReady}
 
 
 let elements = {
@@ -32,20 +32,18 @@ let elements = {
 
         window.addEventListener("load", openModeDialog);
         window.addEventListener("load", applyGrid);
-        //window.addEventListener("load", game);
         this.dialogChildren().forEach(child => child.addEventListener("click", gameModeSelection));
         this.btnCancel.forEach(btn => btn.addEventListener("click", cancelDialog));
         this.btnOk.forEach(btn => btn.addEventListener("click", approveDialog));
         this.btnOk.forEach(btn => btn.addEventListener("click", displayNames));
         this.btnRandomArr.forEach(btn => btn.addEventListener("click", createRandomShips));
-        this.btnReadyArr.forEach(btn => btn.addEventListener("click", startGame));
+        this.btnReadyArr.forEach(btn => btn.addEventListener("click", playersReady));
     },
 
     dialogChildren(){
 
        return Array.from(this.dialogMode.children) 
-    },
-
+    }
 }
 
 function createElement(element, className, secondClassName){
@@ -72,8 +70,7 @@ function createGrid(board){
             let quadrant = createElement("div", `row-${i}`, `col-${j}`)
             quadrant.setAttribute("data-square", `${i}-${j}`)
             quadrant.addEventListener("click", hitListener)
-            quadrant.addEventListener("click", turn)
-            board.appendChild(quadrant) 
+            board.appendChild(quadrant)
         } 
     }
 }
@@ -87,8 +84,8 @@ function applyGrid() {
 
 function openModeDialog(){
 
-    if(elements.dialogMode.getAttribute("id") === "close") elements.dialogMode.removeAttribute("id")
-    if(!elements.wrapper.classList.contains("blur")) elements.wrapper.classList.add("blur")
+    elements.dialogMode.removeAttribute("id")
+    elements.wrapper.classList.add("blur")
 }
 
 function gameModeSelection(e) {
@@ -116,24 +113,37 @@ function approveDialog(e) {
     let mode = e.target.dataset.mode
 
     gameModeData(mode)
-    //game(playerOne, playerTwo)
+
+    console.log("GAME PRIMERO", GAME)
 
     e.currentTarget.parentElement.parentElement.setAttribute("id", "close")
     elements.inputsNames.forEach(input => input.value = "")
     elements.wrapper.classList.remove("blur")
 }
 
+function gameModeData(mode){
 
+    if(mode === "PlayerMode") {
 
+        GAME.getGameData(mode, [elements.inputsNames[0].value, elements.inputsNames[1].value], null)
+    }
+    
+    else if(mode === "CpuMode") {
+
+        let difficulty
+
+        elements.inputsRadio.forEach(input => { if(input.checked) difficulty = input.value })
+
+        GAME.getGameData(mode, [elements.inputsNames[2].value], difficulty)
+    }
+};
 
 
 function createRandomShips(e) {
 
-    let state =  retrieveData()
-
     let whichPlayer = Number(e.currentTarget.dataset.board)
  
-    let player = state.players[whichPlayer]
+    let player = GAME.players[whichPlayer]
     let board = elements.boards[whichPlayer]
 
     createGrid(board)
@@ -141,42 +151,37 @@ function createRandomShips(e) {
     player.gameBoard.placeShips()
 
     displayShip(player)
-
-    updateData(state)
 }
-
 
 function hitListener(e) {
 
-    let state = retrieveData()
-    //console.log("STATE HIT LISTENER", state)
-
     let quadrant = e.target.dataset.square.split("-").map(str => Number(str))
-    //console.log("quadrant", quadrant)
-    let whichPlayer = Number(e.target.parentElement.dataset.board)
-
-    let player = state.players[whichPlayer]
-    //console.log("PLAYER", player)
-
-   let hitOnTarget = player.gameBoard.receiveAttack(quadrant)
-
-    //displayBoard()
-
-    //console.log("SHIPS DEL PLAYER", player.gameBoard.ships)
-
-    displayBoard(player, hitOnTarget)
-
    
+    GAME.turn(quadrant)
 
-    /* let shiphit = player.gameBoard.shipHitList
-    console.log("shiphit LIST", shiphit)
-    let waterhit = player.gameBoard.waterHitList
-    console.log("waterhit LIST", waterhit) */
+    displayBoard()
+    displayTurn()
+    toggleBoard()
+}
 
+function playersReady(e) {
 
-    updateData(state)
+    console.log("players ready")
 
-    //turnToggle(player)
+    e.currentTarget.dataset.ready = true
+
+    for(let btn of elements.btnReadyArr) if(btn.dataset.ready === "false") return
+
+    GAME.startGame()
+
+    toggleBoard()
+    displayTurn()
+}
+
+function toggleBoard() {
+
+    elements.boards[GAME.getPassivePlayer()].classList.remove("unable")
+    elements.boards[GAME.playerTurn].classList.add("unable")
 }
 
 

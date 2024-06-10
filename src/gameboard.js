@@ -153,8 +153,6 @@ class GameBoard {
 
                 if(coordinate[0] === square[0] && coordinate[1] === square[1]) {
 
-                    console.log("SHIP", ship)
-
                     ship.hit()
                     //if(ship.isSunk) this.allShipsSunk(ship)
                     if(ship.isSunk) this.shipsSunk.push(ship)

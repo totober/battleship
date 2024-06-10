@@ -34,10 +34,34 @@ class Player {
 
             let [row, col] = move
 
-            if(row === quadrant[0] && col === quadrant[1]) return true
+            if(row === quadrant[0] && col === quadrant[1]) {
+
+                //console.log("dentro del object, MOVIMIENTO REPETIDO!")
+                //console.log("moves arr", this.moves)
+
+                return true
+            } 
         }
 
+        //console.log("dentro del object, MOVIMIENTO VALIDO!")
+        //console.log("moves arr", this.moves)
         this.moves.push(quadrant)
     }
+
+    receiveAttack(square) {
+
+        this.gameBoard.receiveAttack(square)
+    }
+
+    getHitList(){
+
+       return this.gameBoard.shipHitList
+    }
+
+    getMissList(){
+
+        return this.gameBoard.waterHitList
+    }
+
 }
 
