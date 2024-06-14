@@ -8,33 +8,21 @@ class GameBoard {
 
         this.rowQuantity = rowQuantity,
         this.columnQuantity = columnQuantity,
+        this.shipTypes = [{type: "carrier", length: 5}, {type: "battleship", length: 4}, 
+                          {type: "destroyer", length: 3}, {type: "submarine", length: 3}, 
+                          {type: "patrol boat", length: 2}],
         this.ships = [],
         this.shipsSunk = [],
-        this.waterHitList = [] /* [[], [], [], [], [], [], [], [], [], []] */,
-        this.shipHitList = [] /* [[], [], [], [], [], [], [], [], [], []] */,
+        this.waterHitList = [],
+        this.shipHitList = [],
         this.shipsCoords = []   
     }
 
-    setProperties(state){
-
-        this.rowQuantity = state.rowQuantity;
-        this.columnQuantity = state.columnQuantity;
-        this.ships = state.ships;
-        this.shipsSunk = state.shipsSunk;
-        this.waterHitList = state.waterHitList;
-        this.shipHitList = state.shipHitList;
-        this.shipsCoords = state.shipsCoords
-    };
-
     #createShips(){
-
-        let shipTypes = [{type: "carrier", length: 5}, {type: "battleship", length: 4}, 
-                        {type: "destroyer", length: 3}, {type: "submarine", length: 3}, 
-                        {type: "patrol boat", length: 2}]
                     
         let shipsQueue = []
 
-        for(let ship of shipTypes){
+        for(let ship of this.shipTypes){
   
             shipsQueue.push(new Ship(ship.length, ship.type))          
         }
@@ -141,23 +129,15 @@ class GameBoard {
     
         let hitOnTarget = false
 
-        //console.log("A VER LOS SHIPS", this.ships)
-
         for(let ship of this.ships) {
 
-            //console.log("SHIP", ship)
-
             for(let coordinate of ship.coordinates){
-
-                //console.log("COORD", coordinate)
 
                 if(coordinate[0] === square[0] && coordinate[1] === square[1]) {
 
                     ship.hit()
-                    //if(ship.isSunk) this.allShipsSunk(ship)
                     if(ship.isSunk) this.shipsSunk.push(ship)
-
-                    //this.shipHitList[square[0]].push(square[1])     
+                        
                     this.shipHitList.push(square)        
                     hitOnTarget = true
 
@@ -165,17 +145,10 @@ class GameBoard {
                 }
             }
 
-            //if(hitOnTarget) break
-
-            if(hitOnTarget) return true
+            if(hitOnTarget) return
         } 
 
-        //if(hitOnTarget === false) this.waterHitList[square[0]].push(square[1])
-
-        //this.waterHitList[square[0]].push(square[1])
         this.waterHitList.push(square)
-
-        return false
     }
 
     #shipsRefs() {

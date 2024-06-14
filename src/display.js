@@ -8,46 +8,25 @@ export {displayBoard, displayShip, displayNames, displayTurn}
 
 
 
-// CAMBIOS GAME //
-function displayTotalBoard(){
+function displayShip(whichPlayer) {
+    
+    let board = elements.boards[whichPlayer]
 
-    //let state = retrieveData()
-
-    for (let player of /* state.players */GAME.players) {
-
-        let board = elements.boards[player.ID]
-
-        player.gameBoard.shipsCoords.flat().forEach(coord => addClass(board, coord, "ship")) 
-
-        player.gameBoard.shipHitList.forEach(coord => addClass(board, coord, "hit"))
-
-        player.gameBoard.waterHitList.forEach(coord => addClass(board, coord, "miss"))
-    }
-}
-
-
-function displayShip(player) {
-
-    let board = elements.boards[player.ID]
-
-    player.gameBoard.shipsCoords.flat().forEach(coord => addClass(board, coord, "ship"))
+    GAME.getPlayerShips(whichPlayer).flat().forEach(coord => addClass(board, coord, "ship"))
 }
 
 function displayBoard(){
 
-    let player = GAME.players[GAME.playerTurn]
-    let board = elements.boards[player.ID]
+    let board = elements.boards[GAME.getActivePlayerRef()]
 
-    /* player.gameBoard.shipHitList.forEach(coord => addClass(board, coord, "hit")) 
-    player.gameBoard.waterHitList.forEach(coord => addClass(board, coord, "miss")) */
-    player.getHitList().forEach(coord => addClass(board, coord, "hit")) 
-    player.getMissList().forEach(coord => addClass(board, coord, "miss"))
+    GAME.getPlayerHitList().forEach(coord => addClass(board, coord, "hit"))
+    GAME.getPlayerMissList().forEach(coord => addClass(board, coord, "miss"))
 }
 
 
 function addClass(board, quadrant, className) {
 
-    if(quadrant.length < 1) return
+    /* if(quadrant.length < 1) return */
 
     let [row, col] = quadrant
 
@@ -61,17 +40,33 @@ function displayNames() {
 
     for(let i = 0; i < elements.outputArr.length; i++) {
 
-        //elements.outputArr[i].textContent = state.players[i].upperCaseName()
-        elements.outputArr[i].textContent = GAME.players[i].upperCaseName()
+        elements.outputArr[i].textContent = GAME.getPlayerName(i)
     }
 }
 
 function displayTurn() {
 
-    let player = GAME.players[GAME.playerTurn]
     let title = elements.title
 
-    title.textContent = `${player.upperCaseName()}'s turn!`
+    title.textContent = `${GAME.getPlayerName()}'s turn!`
+}
+
+
+
+
+
+function displayTotalBoard(){
+
+    for (let player of GAME.players) {
+
+        let board = elements.boards[player.ID]
+
+        player.gameBoard.shipsCoords.flat().forEach(coord => addClass(board, coord, "ship")) 
+
+        player.gameBoard.shipHitList.forEach(coord => addClass(board, coord, "hit"))
+
+        player.gameBoard.waterHitList.forEach(coord => addClass(board, coord, "miss"))
+    }
 }
 
 

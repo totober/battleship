@@ -125,7 +125,7 @@ function gameModeData(mode){
 
     if(mode === "PlayerMode") {
 
-        GAME.getGameData(mode, [elements.inputsNames[0].value, elements.inputsNames[1].value], null)
+        GAME.setGameData(mode, [elements.inputsNames[0].value, elements.inputsNames[1].value], null)
     }
     
     else if(mode === "CpuMode") {
@@ -134,7 +134,7 @@ function gameModeData(mode){
 
         elements.inputsRadio.forEach(input => { if(input.checked) difficulty = input.value })
 
-        GAME.getGameData(mode, [elements.inputsNames[2].value], difficulty)
+        GAME.setGameData(mode, [elements.inputsNames[2].value], difficulty)
     }
 };
 
@@ -142,15 +142,13 @@ function gameModeData(mode){
 function createRandomShips(e) {
 
     let whichPlayer = Number(e.currentTarget.dataset.board)
- 
-    let player = GAME.players[whichPlayer]
     let board = elements.boards[whichPlayer]
 
     createGrid(board)
 
-    player.gameBoard.placeShips()
+    GAME.placePlayerShips(whichPlayer)
 
-    displayShip(player)
+    displayShip(whichPlayer)
 }
 
 function hitListener(e) {
@@ -161,27 +159,29 @@ function hitListener(e) {
 
     displayBoard()
     displayTurn()
-    toggleBoard()
+    toggleActiveBoard()
 }
 
 function playersReady(e) {
 
-    console.log("players ready")
-
     e.currentTarget.dataset.ready = true
+    e.currentTarget.disabled = true
+    
+    let whichBoard = e.currentTarget.parentElement.parentElement.firstElementChild.dataset.board
+    elements.btnRandomArr[whichBoard].disabled = true
 
     for(let btn of elements.btnReadyArr) if(btn.dataset.ready === "false") return
 
     GAME.startGame()
 
-    toggleBoard()
+    toggleActiveBoard()
     displayTurn()
 }
 
-function toggleBoard() {
+function toggleActiveBoard() {
 
-    elements.boards[GAME.getPassivePlayer()].classList.remove("unable")
-    elements.boards[GAME.playerTurn].classList.add("unable")
+    elements.boards[GAME.getPassivePlayerRef()].classList.remove("unable")
+    elements.boards[GAME.getActivePlayerRef()].classList.add("unable")
 }
 
 
