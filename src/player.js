@@ -57,5 +57,11 @@ class Player {
         return this.gameBoard.shipsCoords
     }
 
+    replay(){
+
+        this.moves = []
+        this.gameBoard = new GameBoard()
+    }
+
 }
 

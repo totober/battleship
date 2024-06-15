@@ -24,10 +24,6 @@ class Game {
         this.difficulty; */
     }
 
-    /* init(){
-        return new Game()
-    } */
-
     setGameData(mode, playersNames, difficulty) {
 
         this.#mode = mode
@@ -64,10 +60,7 @@ class Game {
     }
 
     startGame(){
-    
-        console.log("START GAME")
-        console.log(this)
-    
+            
         this.#playerTurn = Math.floor(Math.random() * 2)
     }
 
@@ -82,13 +75,21 @@ class Game {
         }
         
         this.#sendAttack(quadrant)
-
-        if(this.#gameOver()) {
-            // chequear quien gano y anunciarlo.
-            console.log("GAME OVER")
-        }
-
         this.#playerTurn = this.getPassivePlayerRef()
+    }
+
+    replay(){
+
+        this.#players.forEach(player => player.replay())
+        this.#playerTurn = ""
+    }
+
+    reset(){
+
+        this.#difficulty = ""
+        this.#mode = ""
+        this.#playerTurn = ""
+        this.#players = []
     }
 
     #sendAttack(quadrant) {
@@ -97,10 +98,14 @@ class Game {
         player.receiveAttack(quadrant)
     }
 
-    #gameOver() {
+    isGameOver() {
     
         for(let player of this.#players) {
-            if(player.gameBoard.shipsSunk.length === 5) return true
+
+            if(player.gameBoard.shipsSunk.length === /* 5 */1) {
+
+                return true
+            }
         }
         
         return false
@@ -140,7 +145,5 @@ class Game {
 
         this.#players[whichPlayer].placeShips()
     }
-
-
 
 }

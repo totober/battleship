@@ -8,8 +8,8 @@ class GameBoard {
 
         this.rowQuantity = rowQuantity,
         this.columnQuantity = columnQuantity,
-        this.shipTypes = [{type: "carrier", length: 5}, {type: "battleship", length: 4}, 
-                          {type: "destroyer", length: 3}, {type: "submarine", length: 3}, 
+        this.shipTypes = [/* {type: "carrier", length: 5}, {type: "battleship", length: 4}, 
+                          {type: "destroyer", length: 3}, {type: "submarine", length: 3},  */
                           {type: "patrol boat", length: 2}],
         this.ships = [],
         this.shipsSunk = [],

@@ -12,7 +12,8 @@
         <h3></h3>
     </header>
     <main>
-        <section class="player-one">
+        <section class="player-one" data-board="0">
+            <button class="cover">cover</button>
             <div class="board" data-board="0"></div>
             <div class="options">
                     <output></output>
@@ -23,7 +24,8 @@
                     <button class="ready" data-ready="false">READY</button>
             </div>
         </section>
-        <section class="player-two">
+        <section class="player-two" data-board="1">
+            <button class="cover">cover</button>
             <div class="board" data-board="1"></div>
             <div class="options">
                 <output></output>
@@ -83,6 +85,16 @@
         <div class="buttons">
             <button class="cancel">Cancel</button><button class="ok" data-mode ="CpuMode">Ready!</button>
         </div>
+    </article>
+    <article class="game-over child" id="close">
+        <h2>Congratulations!</h2>
+        <output class="winner"></output>
+        <section class="replay">
+            <p>Replay</p>
+        </section>
+        <section class="reset">
+            <p>Back to mode menu</p>
+        </section>
     </article>
 </body>
 </html>

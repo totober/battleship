@@ -10,7 +10,7 @@
 
 /* /// CLASSES /// */
 
-.blur{
+.blur {
 
     filter: blur(20px);
     pointer-events: none;
@@ -47,32 +47,7 @@ body{
 
 }
 
-/* /// HEADER /// */
-
-header {
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-}
-
-h1 {
-    color: beige;
-    margin-bottom: 30px;
-}
-
-h3 {
-    color: beige;
-}
-
-/* /// MAIN /// */
-
-main {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
+/* /// ARTICLES /// */
 
 article {
     font-weight: 600;
@@ -149,7 +124,7 @@ article section:hover p {
     transform: scale(1.15);
 }
 
-/* DIALOGS CHIQUITOS */
+/* CHILDREN ARTICLES */
 
 article.child{
 
@@ -181,6 +156,18 @@ article.child div.buttons {
     border-bottom: none;
 }
 
+article.game-over output,
+article.game-over h2 {
+    color: black;
+    text-align: center;
+    font-size: 1.6rem;
+}
+
+article.game-over section.replay {
+    border-bottom: 1px solid black;
+}
+
+
 input {
     font-size: 16.5px;
     font-weight: 500;
@@ -190,6 +177,10 @@ input {
     border: 1px solid black;
 }
 
+article button {
+    margin: auto;
+}
+
 button {
 
     background-color: #fff;
@@ -197,7 +188,6 @@ button {
     font-weight: 500;
     padding: 5px 10px;
     border-radius: 5px;
-    margin: auto;
     border: 1px solid black;
     box-shadow: 2px 2px 3px rgb(44, 44, 44);
     transition: ease-in-out 0.3s;
@@ -210,20 +200,45 @@ button:active {
 }
 
 
+/* /// HEADER /// */
+
+header {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+h1 {
+    color: beige;
+    margin-bottom: 30px;
+}
+
+h3 {
+    color: beige;
+}
 
 
 
+/* /// MAIN /// */
 
-
-
-
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
 
 section {
     display: grid;
-    grid-template-rows: 1fr 20%;
+    grid-template-rows: auto 1fr 20%;
     margin: 15px;
     padding: 15px;
+}
 
+section > button {
+    margin-inline-end: auto;
+    margin-inline-start: 15px;
 }
 
 .board {
@@ -240,7 +255,7 @@ section {
     min-height: 30px;
 }
 
-.board div.ship {
+.board#uncover div.ship {
     border: 1px solid red;
     background-color: white;
 
@@ -275,10 +290,6 @@ output {
 .options div {
     display: flex;
     gap: 15px;
-}
-
-.options button{
-    margin: 0;
 }
 
 .options button.random{
