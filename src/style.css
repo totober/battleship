@@ -49,6 +49,12 @@ body{
 
 /* /// ARTICLES /// */
 
+h1 {
+    font-size: 2.5rem;
+    letter-spacing: 5px;
+    cursor: default;
+}
+
 article {
     font-weight: 600;
     background-color: #fff;
@@ -59,19 +65,19 @@ article {
     top: 50%;
     transform: translate(-50%, -50%);
     /* hasta aca */
-    cursor: pointer;
     animation: fade-in 0.7s ease-out;
 }
 
-
-article.mode-selection {
-
-    display: flex;
-    flex-direction: column;
-
-    min-width: 25vw;
-    outline: none;
+article.start,
+article.child {
+    padding: 30px;
 }
+
+article.start p {
+
+    font-size: 1.6rem;
+}
+
 
 @keyframes fade-in {
     0% {
@@ -101,21 +107,27 @@ article.mode-selection {
     }
 }
 
+article section,
+article div,
+article button {
 
-article.mode-selection > :first-child {
-    border-bottom: 2px solid black;
+    cursor: pointer;
 }
-
 
 article section {
 
     text-align: center;
     padding: 30px;
     margin-block: 0;
-    
+}
+
+article button {
+
+    margin: auto;
 }
 
 article section p {
+
     transition: ease-in-out 0.4s;
 }
 
@@ -124,13 +136,26 @@ article section:hover p {
     transform: scale(1.15);
 }
 
+article section p,
+article label,
+article legend,
+article button {
+
+    font-size: 1.2rem;
+}
+
+article.mode-selection > :first-child {
+    border-bottom: 2px solid black;
+}
+
+
 /* CHILDREN ARTICLES */
 
-article.child{
+/* article.child{
 
     padding: 30px;
 
-}
+} */
 
 article.child div {
 
@@ -177,9 +202,6 @@ input {
     border: 1px solid black;
 }
 
-article button {
-    margin: auto;
-}
 
 button {
 
@@ -211,12 +233,12 @@ header {
 
 }
 
-h1 {
+header h1 {
     color: beige;
     margin-bottom: 30px;
 }
 
-h3 {
+header h3 {
     color: beige;
 }
 
@@ -259,6 +281,18 @@ section > button {
     border: 1px solid red;
     background-color: white;
 
+}
+
+.board div.hit,
+.board div.miss {
+
+    cursor: not-allowed;
+}
+
+.board div.hit:active,
+.board div.miss:active {
+
+    background-color: rgba(173, 173, 173, 0.5);
 }
 
 .board div.hit {

@@ -12,7 +12,8 @@ let elements = {
 
     wrapper: document.querySelector(".wrapper"),
     boards: Array.from(document.querySelectorAll(".board")),
-    dialogMode: document.querySelector("article"),
+    dialogStart: document.querySelector("article"),
+    dialogMode: document.querySelector("article.mode-selection"),
     dialogPlayerMode: document.querySelector("article.PlayerMode"),
     dialogCpuMode: document.querySelector("article.CpuMode"),
     dialogGameOver: document.querySelector("article.game-over"),
@@ -24,6 +25,7 @@ let elements = {
     btnReadyArr: Array.from(document.querySelectorAll("button.ready")),
     btnCoverArr: Array.from(document.querySelectorAll("button.cover")),
     outputArr: Array.from(document.querySelectorAll("output:not(.winner)")),
+    start: document.querySelector("article.start section p"),
     title: document.querySelector("h3"),
     winner: document.querySelector(".winner"),
     replay: document.querySelector(".replay"),
@@ -35,8 +37,8 @@ let elements = {
 
     addListeners() {
 
-        window.addEventListener("load", openModeDialog);
-        //window.addEventListener("load", gameOverDialog);
+        //window.addEventListener("load", openModeDialog);
+        window.addEventListener("load", openStartDialog);
         window.addEventListener("load", applyGrid);
         this.dialogChildren().forEach(child => child.addEventListener("click", gameModeSelection));
         this.btnCancel.forEach(btn => btn.addEventListener("click", cancelDialog));
@@ -45,6 +47,7 @@ let elements = {
         this.btnRandomArr.forEach(btn => btn.addEventListener("click", createRandomShips));
         this.btnReadyArr.forEach(btn => btn.addEventListener("click", playersReady));
         this.btnCoverArr.forEach(btn => btn.addEventListener("click", toggleCoverBoard));
+        this.start.addEventListener("click", openModeDialog);
         this.replay.addEventListener("click", replay);
         this.reset.addEventListener("click", reset);
     },
@@ -90,11 +93,16 @@ function applyGrid() {
     for(let board of elements.boards) createGrid(board) 
 }
 
+function openStartDialog(){
+
+    elements.dialogStart.removeAttribute("id")
+    elements.wrapper.classList.add("blur")
+}
 
 function openModeDialog(){
 
+    elements.dialogStart.setAttribute("id", "close")
     elements.dialogMode.removeAttribute("id")
-    elements.wrapper.classList.add("blur")
 }
 
 
@@ -185,6 +193,10 @@ function playersReady(e) {
 
 function hitListener(e) {
 
+    // esto es para que si el jugador se fija donde estan sus barcos, y se olvida de apretar
+    // el boton para volver a cubrirlos y ataca, automaticamente dejen de mostrarse.
+    elements.boards[GAME.getActivePlayerRef()].removeAttribute("id")
+
     let quadrant = e.target.dataset.square.split("-").map(str => Number(str))
    
     GAME.turn(quadrant)
@@ -193,10 +205,6 @@ function hitListener(e) {
     toggleActiveBoard()
     displayTurn()
     displayBoard()
-
-    // esto es para que si el jugador se fija donde estan sus barcos, y se olvida de apretar
-    // el boton para volver a cubrirlos y ataca, automaticamente dejen de mostrarse.
-    elements.boards[GAME.getPassivePlayerRef()].removeAttribute("id")
 
     if(GAME.isGameOver()) gameOverDialog()
 }
@@ -227,7 +235,7 @@ function gameOverDialog(){
 
     elements.dialogGameOver.removeAttribute("id");
     elements.wrapper.classList.add("blur");
-    elements.winner.textContent = `${GAME.getPlayerName()} is the winner!!`;
+    elements.winner.textContent = `${GAME.getPlayerName(GAME.getPassivePlayerRef())} is the winner!!`;
 
 }
 
@@ -241,14 +249,16 @@ function reset(){
 
     GAME.reset()
     resetDOM()
-    openModeDialog()
+    openStartDialog()
 }
 
 function resetDOM () {
 
     applyGrid()
+    elements.title.textContent = "";
     elements.btnRandomArr.forEach(btn => btn.disabled = false)
     elements.btnReadyArr.forEach(btn => btn.disabled = false)
+    elements.btnCoverArr.forEach(btn => btn.disabled = false)
     elements.dialogGameOver.setAttribute("id", "close");
     elements.wrapper.classList.remove("blur");
 }

@@ -68,11 +68,7 @@ class Game {
  
         let duplicatedMove = this.#players[this.#playerTurn].checkMoves(quadrant)
      
-        if(duplicatedMove) {
-             
-             console.log("movimiento repetido!")
-             return
-        }
+        if(duplicatedMove) return
         
         this.#sendAttack(quadrant)
         this.#playerTurn = this.getPassivePlayerRef()
