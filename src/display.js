@@ -4,7 +4,7 @@ import {elements, createGrid} from "./dom"
 import {storeData, retrieveData, updateData} from "./storage"
 import { GAME } from "."
 
-export {displayBoard, displayShip, displayNames, displayTurn}
+export {displayBoard, displayShip, displayNames, displayPlayerTurn, displayWinner}
 
 
 
@@ -44,11 +44,19 @@ function displayNames() {
     }
 }
 
-function displayTurn() {
+function displayPlayerTurn() {
 
     let title = elements.title
 
     title.textContent = `${GAME.getPlayerName()}'s turn!`
+}
+
+function displayWinner(){
+
+    console.log("pasivo display", GAME.getPlayerName(GAME.getPassivePlayerRef()))
+
+    elements.winner.textContent = 
+    `${GAME.getPlayerName(GAME.getPassivePlayerRef())} is the winner!!`;
 }
 
 

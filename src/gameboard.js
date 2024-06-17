@@ -161,6 +161,8 @@ class GameBoard {
 
             this.shipsCoords.push(coordArr)
         }
+
+        console.log("ships coords", this.shipsCoords)
     }
 
     /* allShipsSunk(ship) {

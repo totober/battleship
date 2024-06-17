@@ -1,5 +1,5 @@
 import {elements, playersReady} from "./dom"
-import { Player } from "./player"
+import { Player, CPU } from "./player"
 //import { Ship } from "./ship"
 import {storeData, retrieveData, updateData} from "./storage"
 import { displayTurn } from "./display"
@@ -15,6 +15,7 @@ class Game {
     #players = [];
     #mode;
     #difficulty;
+    #winner;
 
     constructor() {
         
@@ -31,18 +32,16 @@ class Game {
 
         if(mode === "PlayerMode") {
 
-            for(let player of playersNames) this.createPlayer(player)
+            for(let name of playersNames) this.#createPlayer(name)
             
             return
         }
 
-        this.createPlayer(playersNames[0])
-        //this.createCPU(players[1])
-        this.createPlayer(playersNames[1])
-
+        this.#createPlayer(playersNames[0])
+        this.#createCPU(playersNames[1])
     }
   
-    createPlayer(name) {
+    #createPlayer(name) {
 
         let index = this.#players.length
         let num = index === 0 ? "One" : "Two"
@@ -52,16 +51,16 @@ class Game {
         this.#players.push(player)
     }
 
-    createCPU() {
+    #createCPU() {
 
-        let CPU = new CPU("CPU", 1, this.#difficulty)
+        let player = new CPU("CPU", 1, this.#difficulty)
 
-        this.#players.push(CPU)
+        this.#players.push(player)
     }
 
     startGame(){
             
-        this.#playerTurn = Math.floor(Math.random() * 2)
+        this.#playerTurn = /* Math.floor(Math.random() * 2) */ 0
     }
 
     turn(quadrant) {
@@ -71,6 +70,16 @@ class Game {
         if(duplicatedMove) return
         
         this.#sendAttack(quadrant)
+        this.#playerTurn = this.getPassivePlayerRef()
+    }
+
+    CPUturn(){
+
+        if(this.#playerTurn === 0) return
+
+        let square = this.#players[1].attack()
+        this.#sendAttack(square)
+
         this.#playerTurn = this.getPassivePlayerRef()
     }
 
@@ -105,6 +114,10 @@ class Game {
         }
         
         return false
+    }
+
+    getMode() {
+        return this.#mode
     }
 
     getPassivePlayerRef() {

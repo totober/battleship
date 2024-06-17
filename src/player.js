@@ -1,6 +1,6 @@
 import {GameBoard} from "./gameboard"
 
-export {Player}
+export {Player, CPU}
 
 class Player {
 
@@ -62,6 +62,36 @@ class Player {
         this.moves = []
         this.gameBoard = new GameBoard()
     }
+
+}
+
+
+class CPU extends Player {
+
+    constructor(name, ID, difficulty){
+        super(name, ID)
+        this.difficulty = difficulty
+    }
+
+    #randomSquare(){
+
+        let randomRow =  Math.floor(Math.random() * 10)
+        let randomCol =  Math.floor(Math.random() * 10)
+
+        let square = [randomRow, randomCol]
+
+        return square
+    }
+
+    attack(){
+
+        let square = this.#randomSquare()
+
+            while(this.checkMoves(square)) square = this.#randomSquare()
+
+        return square
+    }
+
 
 }
 

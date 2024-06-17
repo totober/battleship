@@ -1,8 +1,8 @@
-import { Player } from "./player"
+import { Player, CPU } from "./player"
 import { GameBoard } from "./gameboard"
 import { Ship } from "./ship"
 import { storeData, retrieveData, updateData } from "./storage"
-import { displayBoard, displayShip, displayNames, displayTurn } from "./display"
+import { displayBoard, displayShip, displayNames, displayPlayerTurn, displayWinner } from "./display"
 import { GAME } from "./index"
 
 export {elements, createGrid, playersReady}
@@ -37,7 +37,6 @@ let elements = {
 
     addListeners() {
 
-        //window.addEventListener("load", openModeDialog);
         window.addEventListener("load", openStartDialog);
         window.addEventListener("load", applyGrid);
         this.dialogChildren().forEach(child => child.addEventListener("click", gameModeSelection));
@@ -95,8 +94,8 @@ function applyGrid() {
 
 function openStartDialog(){
 
-    elements.dialogStart.removeAttribute("id")
     elements.wrapper.classList.add("blur")
+    elements.dialogStart.removeAttribute("id")
 }
 
 function openModeDialog(){
@@ -133,6 +132,7 @@ function approveDialog(e) {
     let mode = e.target.dataset.mode
 
     gameModeData(mode)
+    cpuReady()
 
     e.currentTarget.parentElement.parentElement.setAttribute("id", "close")
     elements.inputsNames.forEach(input => input.value = "")
@@ -155,6 +155,8 @@ function gameModeData(mode){
 
         GAME.setGameData(mode, [elements.inputsNames[2].value], difficulty)
     }
+
+    console.log("GAME", GAME)
 };
 
 
@@ -179,34 +181,57 @@ function playersReady(e) {
     let whichBoard = e.currentTarget.parentElement.parentElement.dataset.board
     elements.btnRandomArr[whichBoard].disabled = true
     elements.boards[whichBoard].removeAttribute("id", "uncover")
-
+    elements.btnCoverArr[whichBoard].disabled = true
 
     for(let btn of elements.btnReadyArr) if(btn.dataset.ready === "false") return
 
     GAME.startGame()
-
-    toggleCoverButton()
-    toggleActiveBoard()
     displayTurn()
 }
 
 
 function hitListener(e) {
 
-    // esto es para que si el jugador se fija donde estan sus barcos, y se olvida de apretar
-    // el boton para volver a cubrirlos y ataca, automaticamente dejen de mostrarse.
     elements.boards[GAME.getActivePlayerRef()].removeAttribute("id")
 
     let quadrant = e.target.dataset.square.split("-").map(str => Number(str))
    
+    playerTurn(quadrant)
+
+    if(GAME.isGameOver()) {
+
+        gameOverDialog()
+        return
+    }
+
+    cpuTurn()
+}
+
+
+function cpuTurn() {
+
+    if(GAME.getMode() !== "CpuMode") return
+
+    GAME.CPUturn()
+
+    setTimeout(() => { displayTurn() }, 2000)
+
+    if(GAME.isGameOver()) gameOverDialog()
+}
+
+function playerTurn(quadrant){
+
     GAME.turn(quadrant)
+    displayTurn()
+}
+
+
+function displayTurn(){
 
     toggleCoverButton()
     toggleActiveBoard()
-    displayTurn()
+    displayPlayerTurn()
     displayBoard()
-
-    if(GAME.isGameOver()) gameOverDialog()
 }
 
 
@@ -214,13 +239,19 @@ function toggleActiveBoard() {
 
     elements.boards[GAME.getPassivePlayerRef()].classList.remove("unable")
     elements.boards[GAME.getActivePlayerRef()].classList.add("unable")
+
+    if(GAME.getMode() === "CpuMode") elements.boards[0].classList.add("unable")
 }
+
 
 function toggleCoverButton(){
 
     elements.btnCoverArr[GAME.getPassivePlayerRef()].disabled = true
     elements.btnCoverArr[GAME.getActivePlayerRef()].disabled = false
+
+    if(GAME.getMode() === "CpuMode") elements.btnCoverArr[1].disabled = true
 }
+
 
 function toggleCoverBoard(e){
 
@@ -231,12 +262,23 @@ function toggleCoverBoard(e){
     else board.setAttribute("id", "uncover")
 }
 
+function cpuReady() {
+
+    if(GAME.getMode() !== "CpuMode") return
+
+    elements.btnReadyArr[1].dataset.ready = true
+    elements.btnReadyArr[1].disabled = true
+    elements.btnRandomArr[1].disabled = true
+    elements.btnCoverArr[1].disabled = true
+    GAME.placePlayerShips(1)
+}
+
 function gameOverDialog(){
 
     elements.dialogGameOver.removeAttribute("id");
     elements.wrapper.classList.add("blur");
-    elements.winner.textContent = `${GAME.getPlayerName(GAME.getPassivePlayerRef())} is the winner!!`;
 
+    displayWinner()
 }
 
 function replay(){
@@ -254,13 +296,14 @@ function reset(){
 
 function resetDOM () {
 
-    applyGrid()
+    applyGrid();
     elements.title.textContent = "";
-    elements.btnRandomArr.forEach(btn => btn.disabled = false)
-    elements.btnReadyArr.forEach(btn => btn.disabled = false)
-    elements.btnCoverArr.forEach(btn => btn.disabled = false)
+    elements.btnRandomArr.forEach(btn => btn.disabled = false);
+    elements.btnReadyArr.forEach(btn => btn.disabled = false);
+    elements.btnCoverArr.forEach(btn => btn.disabled = false);
     elements.dialogGameOver.setAttribute("id", "close");
     elements.wrapper.classList.remove("blur");
+    cpuReady();
 }
 
 
