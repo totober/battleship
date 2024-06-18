@@ -9,13 +9,12 @@ class GameBoard {
         this.rowQuantity = rowQuantity,
         this.columnQuantity = columnQuantity,
         this.shipTypes = [/* {type: "carrier", length: 5}, {type: "battleship", length: 4}, 
-                          {type: "destroyer", length: 3}, {type: "submarine", length: 3},  */
+                          {type: "destroyer", length: 3},*/ {type: "submarine", length: 3},  
                           {type: "patrol boat", length: 2}],
         this.ships = [],
-        this.shipsSunk = [],
+        this.sunkShips = [],
         this.waterHitList = [],
-        this.shipHitList = [],
-        this.shipsCoords = []   
+        this.shipHitList = [] 
     }
 
     #createShips(){
@@ -90,9 +89,6 @@ class GameBoard {
                 if(ship.coordinates.length > 0) this.#encloseShip(ship, adjacencyList)
 
         }
-
-        this.#shipsRefs()
-
     }
     
     #encloseShip(ship, adjacencyList){
@@ -121,7 +117,7 @@ class GameBoard {
         this.shipHitList =  [[], [], [], [], [], [], [], [], [], []]
         this.waterHitList = [[], [], [], [], [], [], [], [], [], []]
         this.ships = []
-        this.shipsSunk = []
+        this.sunkShips = []
         this.shipsCoords = []
     }
 
@@ -136,7 +132,7 @@ class GameBoard {
                 if(coordinate[0] === square[0] && coordinate[1] === square[1]) {
 
                     ship.hit()
-                    if(ship.isSunk) this.shipsSunk.push(ship)
+                    if(ship.isSunk) this.sunkShips.push(ship)
                         
                     this.shipHitList.push(square)        
                     hitOnTarget = true
@@ -149,20 +145,6 @@ class GameBoard {
         } 
 
         this.waterHitList.push(square)
-    }
-
-    #shipsRefs() {
-
-        for(let ship of this.ships) {
-
-            let coordArr = []
-
-            for(let coordinate of ship.coordinates) coordArr.push(coordinate) 
-
-            this.shipsCoords.push(coordArr)
-        }
-
-        console.log("ships coords", this.shipsCoords)
     }
 
     /* allShipsSunk(ship) {

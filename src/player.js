@@ -54,7 +54,26 @@ class Player {
 
     getShipsCoords(){
         
-        return this.gameBoard.shipsCoords
+        let ships = this.gameBoard.ships
+
+        let shipsCoords = []
+     
+        for(let ship of ships) shipsCoords.push(ship.coordinates)
+
+        return shipsCoords
+    }
+
+    getSunkShips(){
+        
+        let ships = this.gameBoard.sunkShips
+
+        if(ships.length < 1) return []
+     
+        let coords = []
+     
+        for(let ship of ships) coords.push(ship.coordinates)
+     
+        return coords
     }
 
     replay(){
@@ -91,6 +110,8 @@ class CPU extends Player {
 
         return square
     }
+
+
 
 
 }

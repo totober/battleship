@@ -15,7 +15,6 @@ class Game {
     #players = [];
     #mode;
     #difficulty;
-    #winner;
 
     constructor() {
         
@@ -70,6 +69,7 @@ class Game {
         if(duplicatedMove) return
         
         this.#sendAttack(quadrant)
+
         this.#playerTurn = this.getPassivePlayerRef()
     }
 
@@ -107,7 +107,7 @@ class Game {
     
         for(let player of this.#players) {
 
-            if(player.gameBoard.shipsSunk.length === /* 5 */1) {
+            if(player.getSunkShips().length === /* 5 */2) {
 
                 return true
             }
@@ -137,7 +137,7 @@ class Game {
 
     getPlayerHitList(whichPlayer = this.#playerTurn){
 
-      return this.#players[whichPlayer].getHitList()
+        return this.#players[whichPlayer].getHitList()
     }
 
     getPlayerMissList(whichPlayer = this.#playerTurn){
@@ -148,6 +148,11 @@ class Game {
     getPlayerShips(whichPlayer = this.#playerTurn){
 
         return this.#players[whichPlayer].getShipsCoords()
+    }
+
+    getPlayerSunkShips(whichPlayer = this.#playerTurn) {
+        
+        return this.#players[whichPlayer].getSunkShips()
     }
 
     placePlayerShips(whichPlayer = this.#playerTurn){

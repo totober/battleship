@@ -186,6 +186,7 @@ function playersReady(e) {
     for(let btn of elements.btnReadyArr) if(btn.dataset.ready === "false") return
 
     GAME.startGame()
+
     displayTurn()
 }
 
@@ -208,6 +209,13 @@ function hitListener(e) {
 }
 
 
+function playerTurn(quadrant){
+
+    GAME.turn(quadrant)
+    displayTurn()
+}
+
+
 function cpuTurn() {
 
     if(GAME.getMode() !== "CpuMode") return
@@ -217,12 +225,6 @@ function cpuTurn() {
     setTimeout(() => { displayTurn() }, 2000)
 
     if(GAME.isGameOver()) gameOverDialog()
-}
-
-function playerTurn(quadrant){
-
-    GAME.turn(quadrant)
-    displayTurn()
 }
 
 

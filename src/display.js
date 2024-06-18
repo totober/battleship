@@ -21,12 +21,11 @@ function displayBoard(){
 
     GAME.getPlayerHitList().forEach(coord => addClass(board, coord, "hit"))
     GAME.getPlayerMissList().forEach(coord => addClass(board, coord, "miss"))
+    GAME.getPlayerSunkShips().flat().forEach(coord => addClass(board, coord, "sunk"))
 }
 
 
 function addClass(board, quadrant, className) {
-
-    /* if(quadrant.length < 1) return */
 
     let [row, col] = quadrant
 
