@@ -16,13 +16,7 @@ class Game {
     #mode;
     #difficulty;
 
-    constructor() {
-        
-        //this.#playerTurn; 
-        //this.players = [];
-       /*  this.mode;
-        this.difficulty; */
-    }
+    //constructor() {}
 
     setGameData(mode, playersNames, difficulty) {
 
@@ -45,21 +39,23 @@ class Game {
         let index = this.#players.length
         let num = index === 0 ? "One" : "Two"
 
-        let player = new Player(name || `Player ${num}`, index)
+        let player = new Player(name || `Player ${num}`)
 
         this.#players.push(player)
     }
 
     #createCPU() {
 
-        let player = new CPU("CPU", 1, this.#difficulty)
+        let player = new CPU("CPU", this.#difficulty)
 
         this.#players.push(player)
     }
 
     startGame(){
             
-        this.#playerTurn = /* Math.floor(Math.random() * 2) */ 0
+        this.#playerTurn = Math.floor(Math.random() * 2)
+
+        if(this.#mode === "CpuMode") this.#playerTurn = 0
     }
 
     turn(quadrant) {
@@ -77,10 +73,21 @@ class Game {
 
         if(this.#playerTurn === 0) return
 
+        this.#updateState()
+
         let square = this.#players[1].attack()
         this.#sendAttack(square)
 
         this.#playerTurn = this.getPassivePlayerRef()
+    }
+
+    #updateState(){
+
+        let rivalHitList = this.getPlayerHitList(0)
+        this.#players[1].setRivalHitList(rivalHitList)
+
+        let sunkenList = this.getPlayerSunkShips(0)
+        this.#players[1].setRivalSunkShips(sunkenList)
     }
 
     replay(){
@@ -107,7 +114,7 @@ class Game {
     
         for(let player of this.#players) {
 
-            if(player.getSunkShips().length === /* 5 */2) {
+            if(player.getSunkShips().length === 5) {
 
                 return true
             }

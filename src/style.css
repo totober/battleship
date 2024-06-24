@@ -184,8 +184,10 @@ article.child div.buttons {
 article.game-over output,
 article.game-over h2 {
     color: black;
-    text-align: center;
+    /* text-align: center; */
     font-size: 1.6rem;
+    display: flex;
+    justify-content: center;
 }
 
 article.game-over section.replay {

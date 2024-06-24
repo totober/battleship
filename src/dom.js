@@ -155,8 +155,6 @@ function gameModeData(mode){
 
         GAME.setGameData(mode, [elements.inputsNames[2].value], difficulty)
     }
-
-    console.log("GAME", GAME)
 };
 
 

@@ -52,17 +52,11 @@ function displayPlayerTurn() {
 
 function displayWinner(){
 
-    console.log("pasivo display", GAME.getPlayerName(GAME.getPassivePlayerRef()))
-
     elements.winner.textContent = 
     `${GAME.getPlayerName(GAME.getPassivePlayerRef())} is the winner!!`;
 }
 
-
-
-
-
-function displayTotalBoard(){
+/* function displayTotalBoard(){
 
     for (let player of GAME.players) {
 
@@ -74,20 +68,5 @@ function displayTotalBoard(){
 
         player.gameBoard.waterHitList.forEach(coord => addClass(board, coord, "miss"))
     }
-}
-
-
-/* function displayHit(player) {
-
-    let board = elements.boards[player.ID]
-
-    player.gameBoard.shipHitList.forEach(coord => addClass(board, coord, "hit")) 
-}
-
-
-function displayMiss(player) {
-
-    let board = elements.boards[player.ID]
-
-    player.gameBoard.waterHitList.forEach(coord => addClass(board, coord, "miss"))
 } */
+
