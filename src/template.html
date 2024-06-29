@@ -5,103 +5,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Battleship</title>
 </head>
-<body>
+<body class="theme-dark">
     <div class="wrapper">
-    <header>
-        <h1>BATTLESHIP<h1>
-        <h3></h3>
-    </header>
-    <main>
-        <section class="player-one" data-board="0">
-            <button class="cover">cover</button>
-            <div class="board" data-board="0"></div>
-            <div class="options">
-                    <output></output>
-                    <div>
-                        <button class="random" data-board="0">S</button>
-                        <p>Press to randomly position your ships!</p>
-                    </div>
-                    <button class="ready" data-ready="false">READY</button>
+        <header>
+            <button class="theme">
+                <img src="../images/sun-white.svg" alt="sun-icon" data-hidden = "false">
+                <img src="../images/moon.svg" alt="moon-icon" data-hidden = "true">
+            </button>
+            <div>
+            <h1 class="fw-bold fs-xxl">BATTLESHIP<h1>
+            <h3 class="fw-bold fs-l"></h3>
             </div>
-        </section>
-        <section class="player-two" data-board="1">
-            <button class="cover">cover</button>
-            <div class="board" data-board="1"></div>
-            <div class="options">
-                <output></output>
-                <div>
-                    <button class="random" data-board="1">S</button>
-                    <p>Press to randomly position your ships!</p>
+        </header>
+        <main>
+            <section class="player-one" data-board="0">
+                <button class="cover">
+                    <img src=""  alt="eye" data-hidden = "false">
+                    <img src="" alt="eye slash" data-hidden = "true">
+                </button>
+                <div class="board" data-board="0"></div>
+                <div class="options">
+                        <output class="fw-regular fs-l"></output>
+                        <div>
+                            <button class="random fs-m" data-board="0">
+                                <img src="" alt="">
+                            </button>
+                            <p class="fw-regular fs-m">Press to randomly position your ships!</p>
+                        </div>
+                        <button class="ready fw-bold fs-m" data-ready="false">READY</button>
                 </div>
-                <button class="ready" data-ready="false">READY</button>
-            </div>
-        </section>
-    </main>
-    <footer>
-        tobiasber
-    </footer>
+            </section>
+            <section class="player-two" data-board="1">
+                <button class="cover">
+                    <img src=""  alt="eye" data-hidden = "false">
+                    <img src="" alt="eye slash"  data-hidden = "true">
+                </button>
+                <div class="board" data-board="1"></div>
+                <div class="options">
+                    <output class="fw-regular fs-l"></output>
+                    <div>
+                        <button class="random fs-m" data-board="1">
+                            <img src="" alt="">
+                        </button>
+                        <p class="fw-regular fs-m">Press to randomly position your ships!</p>
+                    </div>
+                    <button class="ready fw-bold fs-m" data-ready="false">READY</button>
+                </div>
+            </section>
+        </main>
+        <footer class="fs-s fw-regular">
+            tobiasber
+        </footer>
     </div>
     <article class="start">
         <section>
-            <h1>BATTLESHIP</h1>
+            <h1 class="fs-xl fw-bold">BATTLESHIP</h1>
         </section>
         <section>
-            <p>START</p>
+            <p class="fs-l fw-bold">START</p>
         </section>
     </article>
     <article class="mode-selection" id="close">
         <section class="PlayerMode">
-            <p>Player One vs Player Two</p>  
+            <p class="fs-m fw-regular">Player One vs Player Two</p>  
         </section>
         <section class="CpuMode">
-            <p>Player vs CPU</p>
+            <p class="fs-m fw-regular">Player vs CPU</p>
         </section>
     </article>
     <article class="PlayerMode child" id="close">
         <div>
-            <label for="player-one">Player one name:</label>
+            <label for="player-one" class="fs-m fw-regular">Player one name:</label>
             <input type="text" name="player-name" id="player-one">
         </div>
         <div>
-            <label for="player-two">Player two name:</label>
+            <label for="player-two" class="fs-m fw-regular">Player two name:</label>
             <input type="text" name="player-name" id="player-two">
         </div>
         <div class="buttons">
-            <button class="cancel">Cancel</button><button class="ok" data-mode ="PlayerMode">Ready!</button>
+            <button class="cancel fs-m fw-regular">Cancel</button><button class="ok fs-m fw-regular" data-mode ="PlayerMode">Ready!</button>
         </div>
     </article>
     <article class="CpuMode child" id="close"> 
         <div>
-            <label for="player-cpu">Player name:</label>
+            <label for="player-cpu" class="fs-m fw-regular">Player name:</label>
             <input type="text" name="player-name" id="player-cpu">
         </div> 
         <fieldset>
-            <legend>Select difficulty</legend>
+            <legend class="fs-m fw-regular">Select difficulty</legend>
             <div>
                 <input type="radio" value="easy" id="easy" name="difficulty"> 
-                <label for="easy">Easy</label>
+                <label for="easy" class="fs-m fw-regular">Easy</label>
             </div>
             <div>
                 <input type="radio" value="medium" id="medium" name="difficulty" checked> 
-                <label for="medium">Medium</label>
+                <label for="medium" class="fs-m fw-regular">Medium</label>
             </div>
             <div>
                 <input type="radio" value="hard" id="hard" name="difficulty"> 
-                <label for="hard">Hard</label>
+                <label for="hard" class="fs-m fw-regular">Hard</label>
             </div>
         </fieldset>
         <div class="buttons">
-            <button class="cancel">Cancel</button><button class="ok" data-mode ="CpuMode">Ready!</button>
+            <button class="cancel fs-m fw-regular">Cancel</button><button class="ok fs-m fw-regular" data-mode ="CpuMode">Ready!</button>
         </div>
     </article>
     <article class="game-over child" id="close">
-        <h2>Congratulations!</h2>
-        <output class="winner"></output>
+        <h2 class="fs-l fw-bold">Congratulations!</h2>
+        <output class="winner fs-l fw-bold"></output>
         <section class="replay">
-            <p>Replay</p>
+            <p class="fs-m fw-regular">Replay</p>
         </section>
         <section class="reset">
-            <p>Back to mode menu</p>
+            <p class="fs-m fw-regular">Back to mode menu</p>
         </section>
     </article>
 </body>

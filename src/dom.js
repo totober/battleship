@@ -11,6 +11,7 @@ export {elements, createGrid, playersReady}
 let elements = {
 
     wrapper: document.querySelector(".wrapper"),
+    body: document.querySelector("body"),
     boards: Array.from(document.querySelectorAll(".board")),
     dialogStart: document.querySelector("article"),
     dialogMode: document.querySelector("article.mode-selection"),
@@ -19,6 +20,7 @@ let elements = {
     dialogGameOver: document.querySelector("article.game-over"),
     btnCancel: Array.from(document.querySelectorAll("button.cancel")),
     btnOk: Array.from(document.querySelectorAll("button.ok")),
+    btnTheme: document.querySelector(".theme"),
     inputsNames: Array.from(document.querySelectorAll("[name=player-name]")),
     inputsRadio: Array.from(document.querySelectorAll("[name=difficulty]")),
     btnRandomArr: Array.from(document.querySelectorAll("button.random")),
@@ -43,6 +45,7 @@ let elements = {
         this.btnCancel.forEach(btn => btn.addEventListener("click", cancelDialog));
         this.btnOk.forEach(btn => btn.addEventListener("click", approveDialog));
         this.btnOk.forEach(btn => btn.addEventListener("click", displayNames));
+        this.btnTheme.addEventListener("click", toggleTheme);
         this.btnRandomArr.forEach(btn => btn.addEventListener("click", createRandomShips));
         this.btnReadyArr.forEach(btn => btn.addEventListener("click", playersReady));
         this.btnCoverArr.forEach(btn => btn.addEventListener("click", toggleCoverBoard));
@@ -180,6 +183,8 @@ function playersReady(e) {
     elements.btnRandomArr[whichBoard].disabled = true
     elements.boards[whichBoard].removeAttribute("id", "uncover")
     elements.btnCoverArr[whichBoard].disabled = true
+    elements.btnCoverArr[whichBoard].firstElementChild.dataset.hidden = true
+    elements.btnCoverArr[whichBoard].lastElementChild.dataset.hidden = false
 
     for(let btn of elements.btnReadyArr) if(btn.dataset.ready === "false") return
 
@@ -247,6 +252,9 @@ function toggleActiveBoard() {
 function toggleCoverButton(){
 
     elements.btnCoverArr[GAME.getPassivePlayerRef()].disabled = true
+    elements.btnCoverArr[GAME.getPassivePlayerRef()].firstElementChild.dataset.hidden = true
+    elements.btnCoverArr[GAME.getPassivePlayerRef()].lastElementChild.dataset.hidden = false
+
     elements.btnCoverArr[GAME.getActivePlayerRef()].disabled = false
 
     if(GAME.getMode() === "CpuMode") elements.btnCoverArr[1].disabled = true
@@ -258,9 +266,23 @@ function toggleCoverBoard(e){
     let whichBoard = e.currentTarget.parentElement.dataset.board
     let board = elements.boards[whichBoard]
 
+    toggleCoverIcon(whichBoard)
+
     if(board.hasAttribute("id")) board.removeAttribute("id")
     else board.setAttribute("id", "uncover")
 }
+
+function toggleCoverIcon(whichPlayer){
+
+    let btn = elements.btnCoverArr[whichPlayer]
+
+    btn.firstElementChild.dataset.hidden === "true" ? 
+    btn.firstElementChild.dataset.hidden = "false" : btn.firstElementChild.dataset.hidden = "true";
+
+    btn.lastElementChild.dataset.hidden === "true" ? 
+    btn.lastElementChild.dataset.hidden = "false" : btn.lastElementChild.dataset.hidden = "true";
+}
+
 
 function cpuReady() {
 
@@ -270,6 +292,9 @@ function cpuReady() {
     elements.btnReadyArr[1].disabled = true
     elements.btnRandomArr[1].disabled = true
     elements.btnCoverArr[1].disabled = true
+    elements.btnCoverArr[1].firstElementChild.dataset.hidden = true
+    elements.btnCoverArr[1].lastElementChild.dataset.hidden = false
+
     GAME.placePlayerShips(1)
 }
 
@@ -304,6 +329,24 @@ function resetDOM () {
     elements.dialogGameOver.setAttribute("id", "close");
     elements.wrapper.classList.remove("blur");
     cpuReady();
+}
+
+function toggleTheme(e){
+
+    let target = e.currentTarget
+
+    if(elements.body.className === "theme-dark") {
+
+        elements.body.className = "theme-light"
+        target.firstElementChild.dataset.hidden = true
+        target.lastElementChild.dataset.hidden = false
+
+    } else if(elements.body.className === "theme-light") {
+
+        elements.body.className = "theme-dark"
+        target.firstElementChild.dataset.hidden = false
+        target.lastElementChild.dataset.hidden = true
+    }
 }
 
 
