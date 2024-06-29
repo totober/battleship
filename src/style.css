@@ -487,10 +487,16 @@ body.theme-light button.cover img:nth-child(2){
     border: 1px solid var(--color-contrast);
 }
 
-.board#uncover div.ship {
-    border: 1px solid red;
-    background-color: white;
+body.theme-dark .board#uncover div.ship {
 
+    content: url(../images/ship-white.svg);
+    width: 100%;
+}
+
+body.theme-light .board#uncover div.ship {
+
+    content: url(../images/ship.svg);
+    width: 100%;
 }
 
 .board div.hit,
@@ -505,16 +511,18 @@ body.theme-light button.cover img:nth-child(2){
     background-color: rgba(173, 173, 173, 0.5);
 }
 
-.board div.hit {
-    border: 1px solid red;
-    background-color: red;
+.board div.hit,
+body.theme-dark .board#uncover div.hit,
+body.theme-light .board#uncover div.hit {
 
+    content: url(../images/cross-red.svg);
+    width: 100%;
 }
 
 .board div.miss {
-    border: 1px solid blue;
-    background-color: lightblue;
-
+   
+    content: url(../images/water-blue.svg);
+    width: 100%;
 }
 
 .board div.hit.sunk {
@@ -524,6 +532,7 @@ body.theme-light button.cover img:nth-child(2){
 }
 
 .options {
+
     display: flex;
     flex-direction: column;
     gap: .9rem;
@@ -557,7 +566,6 @@ body.theme-light button.random img {
 .options p, output {
 
     color: var(--color-contrast);
-
 }
 
 
