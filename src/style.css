@@ -79,13 +79,13 @@ img, picture, video, canvas, svg {
   --fs-sl: clamp(2.0736rem, 1.4913rem + 2.9115vi, 5.1307rem); /* 33.18 a 82.09 px / 320 a 2000 vw */
 
 
-/* SPACE */
-  --space-xs: clamp(0.75rem, 0.7041rem + 0.2294vi, 1.0625rem); /* 12 a 17 px / 320 a 2500 vw */
-  --space-s: clamp(1rem, 0.945rem + 0.2752vi, 1.375rem); /* 16 a 22 px / 320 a 2500 vw */
-  --space-m: clamp(1.5rem, 1.4174rem + 0.4128vi, 2.0625rem); /* 24 a 33 px / 320 a 2500 vw */
-  --space-l: clamp(2rem, 1.8899rem + 0.5505vi, 2.75rem); /* 32 a 44 px / 320 a 2500 vw */
-  --space-xl: clamp(3rem, 2.8349rem + 0.8257vi, 4.125rem); /* 48 a 66 px / 320 a 2500 vw */
+/* SPACE PAIRS */
 
+  --space-xs-s: clamp(0.75rem, 0.5833rem + 0.8333vi, 1.625rem); /* 12 a 26 px / 320 a 2000 vw */
+  --space-s-m: clamp(1rem, 0.7262rem + 1.369vi, 2.4375rem); /* 16 a 39 px / 320 a 2000 vw */
+  --space-m-l: clamp(1.5rem, 1.1667rem + 1.6667vi, 3.25rem); /* 24 a 52 px / 320 a 2000 vw */
+  --space-l-xl: clamp(2rem, 1.4524rem + 2.7381vi, 4.875rem); /* 32 a 78 px / 320 a 2000 vw */
+  --space-xl-2xl: clamp(3rem, 2.3333rem + 3.3333vi, 6.5rem); /* 48 a 104 px / 320 a 2000 vw */
 }
 
 /* /// UTILITY CLASSES /// */
@@ -135,11 +135,11 @@ img, picture, video, canvas, svg {
 @media (min-width: 110rem) {
 
     :root{
-
-        --space-xs: clamp(1rem, 0.945rem + 0.2752vi, 1.375rem); /* 16 a 22 px / 320 a 2500 vw */
-        --space-s: clamp(1.5rem, 1.4174rem + 0.4128vi, 2.0625rem); /* 24 a 33 px / 320 a 2500 vw */
-        --space-m: clamp(2rem, 1.8899rem + 0.5505vi, 2.75rem); /* 32 a 44 px / 320 a 2500 vw */
-        --space-l: clamp(3rem, 2.8349rem + 0.8257vi, 4.125rem); /* 48 a 66 px / 320 a 2500 vw */
+        --space-xs-s: clamp(1rem, 0.7262rem + 1.369vi, 2.4375rem);
+        --space-s-m: clamp(1.5rem, 1.1667rem + 1.6667vi, 3.25rem);
+        --space-m-l: clamp(2rem, 1.4524rem + 2.7381vi, 4.875rem);
+        --space-l-xl: clamp(3rem, 2.3333rem + 3.3333vi, 6.5rem);
+        --space-xl-2xl: clamp(4rem, 2.9048rem + 5.4762vi, 9.75rem);
     }
 
     .fs-xs {
@@ -200,14 +200,6 @@ img, picture, video, canvas, svg {
     margin-inline: auto;
 } */
 
-
-@media (min-width: 50em) {
-    .even-columns{
-        grid-auto-flow: column;
-        grid-auto-columns: 1fr;
-    }
-}
-
 /* /// BODY /// */
 
 body{
@@ -248,9 +240,13 @@ article {
 
 article.start,
 article.child {
-    padding: var(--space-m)
+    padding: var(--space-m-l)
 }
 
+
+article.CpuMode.child {
+    padding: var(--space-s-m)
+}
 
 @keyframes fade-in {
     0% {
@@ -290,7 +286,7 @@ article button {
 article section {
 
     text-align: center;
-    padding: var(--space-m);
+    padding: var(--space-m-l);
     margin-block: 0;
 }
 
@@ -323,7 +319,7 @@ article.child div {
     flex-direction: column;
     gap: .75rem;
     border-bottom: 1px solid var(--color-contrast);
-    padding: var(--space-s);
+    padding: var(--space-s-m);
 }
 
 article.CpuMode.child div {
@@ -360,6 +356,14 @@ input {
     border: 1px solid var(--color-contrast);
 }
 
+input[type="radio"]:checked {
+    accent-color: var(--color-primary);
+}
+
+body.theme-light input[type="radio"]:checked{
+    accent-color: var(--color-contrast);
+}
+
 
 button {
 
@@ -394,7 +398,7 @@ header button,
 button.cover {
 
     margin: 1rem;
-    width: var(--space-xl);
+    width: var(--space-xl-2xl);
     border: none;
     background-color: transparent;
     box-shadow: none;
@@ -411,7 +415,7 @@ button.cover {
 
 header h1 {
     color: var(--color-contrast);
-    margin-bottom: var(--space-m);
+    margin-bottom: var(--space-m-l);
 }
 
 header h3 {
@@ -485,6 +489,7 @@ body.theme-light button.cover img:nth-child(2){
     border: 1px solid var(--color-secondary);
     aspect-ratio: 1;
     border: 1px solid var(--color-contrast);
+    transition: ease-in-out 0.8s;
 }
 
 body.theme-dark .board#uncover div.ship {
@@ -551,7 +556,7 @@ body.theme-light .board#uncover div.hit {
 .options button.random{
 
     border-radius: 50%;
-    width: var(--space-xl);
+    width: var(--space-l-xl);
     padding: 0;
 }
 
@@ -574,7 +579,7 @@ body.theme-light button.random img {
 footer {
     text-align: center;
     color: var(--color-contrast);
-    padding: var(--space-m);
+    padding: var(--space-m-l);
 }
 
 
