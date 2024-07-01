@@ -78,6 +78,14 @@ img, picture, video, canvas, svg {
   --fs-xxl: clamp(1.728rem, 1.324rem + 2.02vi, 3.849rem); /* 27.65 a 61.58 px / 320 a 2000 vw */
   --fs-sl: clamp(2.0736rem, 1.4913rem + 2.9115vi, 5.1307rem); /* 33.18 a 82.09 px / 320 a 2000 vw */
 
+/* SPACE */
+
+  --space-xs: clamp(0.75rem, 0.6548rem + 0.4762vi, 1.25rem); /* 12 a 20 px / 320 a 2000 vw */
+  --space-s: clamp(1rem, 0.881rem + 0.5952vi, 1.625rem);  /* 16 a 26 px / 320 a 2000 vw */
+  --space-m: clamp(1.5rem, 1.3214rem + 0.8929vi, 2.4375rem); /* 24 a 39 px / 320 a 2000 vw */
+  --space-l: clamp(2rem, 1.7619rem + 1.1905vi, 3.25rem);  /* 32 a 52 px / 320 a 2000 vw */
+  --space-xl: clamp(3rem, 2.6429rem + 1.7857vi, 4.875rem); /* 48 a 78 px / 320 a 2000 vw */
+  --space-2xl: clamp(4rem, 3.5238rem + 2.381vi, 6.5rem);  /* 64 a 104 px / 320 a 2000 vw */
 
 /* SPACE PAIRS */
 
@@ -132,9 +140,17 @@ img, picture, video, canvas, svg {
     font-size: var(--fs-xxl);
 }
 
-@media (min-width: 110rem) {
+/* @media (min-width: 100rem) {
 
     :root{
+
+        --space-xs: clamp(1rem, 0.881rem + 0.5952vi, 1.625rem);
+        --space-s: clamp(1.5rem, 1.3214rem + 0.8929vi, 2.4375rem); 
+        --space-m: clamp(2rem, 1.7619rem + 1.1905vi, 3.25rem);
+        --space-l: clamp(3rem, 2.6429rem + 1.7857vi, 4.875rem); 
+        --space-xl: clamp(4rem, 3.5238rem + 2.381vi, 6.5rem); 
+
+
         --space-xs-s: clamp(1rem, 0.7262rem + 1.369vi, 2.4375rem);
         --space-s-m: clamp(1.5rem, 1.1667rem + 1.6667vi, 3.25rem);
         --space-m-l: clamp(2rem, 1.4524rem + 2.7381vi, 4.875rem);
@@ -165,7 +181,7 @@ img, picture, video, canvas, svg {
     .fs-xxl {
         font-size: var(--fs-sl);
     }
-}
+} */
 
 
 .fw-regular {
@@ -240,12 +256,12 @@ article {
 
 article.start,
 article.child {
-    padding: var(--space-m-l)
+    padding: var(--space-m)
 }
 
 
 article.CpuMode.child {
-    padding: var(--space-s-m)
+    padding: var(--space-s)
 }
 
 @keyframes fade-in {
@@ -286,7 +302,7 @@ article button {
 article section {
 
     text-align: center;
-    padding: var(--space-m-l);
+    padding: var(--space-m);
     margin-block: 0;
 }
 
@@ -319,7 +335,7 @@ article.child div {
     flex-direction: column;
     gap: .75rem;
     border-bottom: 1px solid var(--color-contrast);
-    padding: var(--space-s-m);
+    padding: var(--space-s);
 }
 
 article.CpuMode.child div {
@@ -398,7 +414,7 @@ header button,
 button.cover {
 
     margin: 1rem;
-    width: var(--space-xl-2xl);
+    width: var(--space-xl);
     border: none;
     background-color: transparent;
     box-shadow: none;
@@ -415,7 +431,7 @@ button.cover {
 
 header h1 {
     color: var(--color-contrast);
-    margin-bottom: var(--space-m-l);
+    margin-bottom: var(--space-m);
 }
 
 header h3 {
@@ -439,6 +455,15 @@ img[data-hidden="true"] {
 
     p, output {
         text-wrap: wrap;
+    }
+}
+
+@media (min-width: 72rem) {
+
+    main {
+
+        padding: var(--space-m-l);
+        gap: var(--space-l-xl);
     }
 }
 
@@ -556,7 +581,7 @@ body.theme-light .board#uncover div.hit {
 .options button.random{
 
     border-radius: 50%;
-    width: var(--space-l-xl);
+    width: var(--space-xl);
     padding: 0;
 }
 
@@ -579,7 +604,7 @@ body.theme-light button.random img {
 footer {
     text-align: center;
     color: var(--color-contrast);
-    padding: var(--space-m-l);
+    padding: var(--space-m);
 }
 
 

@@ -118,10 +118,8 @@ function gameModeSelection(e) {
     dialog.removeAttribute("id")
 }
 
-
 function cancelDialog(e){
 
-    //if(e.key !== "Escape") return
     e.currentTarget.parentElement.parentElement.setAttribute("id", "close")
     elements.inputsNames.forEach(input => input.value = "")
 
@@ -130,8 +128,7 @@ function cancelDialog(e){
 
 
 function approveDialog(e) {
-
-    //if(e.key !== "Enter") return
+    
     let mode = e.target.dataset.mode
 
     gameModeData(mode)
